@@ -1,5 +1,6 @@
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.system.*;
 
 import java.nio.*;
@@ -52,6 +53,8 @@ public class Window {
 		glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {	//Pogger.
 			glViewport(0,0,newWidth,newHeight);
 			}));
+		
+		GL.createCapabilities();
 	}
 	
 	public void initViewport() {

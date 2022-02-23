@@ -38,9 +38,33 @@ public class Buffers {
 		
 		glBindVertexArray(vao.get(0));
 		glBindBuffer(GL_ARRAY_BUFFER, vbo.get(0));
+		
 		float[] vertexArray = new float[vertices.size()];
-
-		glBufferData(GL_ARRAY_BUFFER, vertices.toArray(), GL_DYNAMIC_DRAW);
+		for (int i = 0; i < vertices.size(); i++) {
+			vertexArray[i] = (float)vertices.get(i);
+			
+		}
+		
+		glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo.get(0));
+		
+		int[] indexArray = new int[indices.size()];
+		for (int i = 0; i < indices.size(); i++) {
+			indexArray[i] = (int)indices.get(i);
+		}
+		
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexArray, GL_STATIC_DRAW);
+		
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, Float.BYTES * 8, 0);
+		glEnableVertexAttribArray(0);
+		
+		glVertexAttribPointer(1, 3, GL_FLOAT, false, Float.BYTES * 8, Float.BYTES * 3);
+		glEnableVertexAttribArray(1);
+		
+		glVertexAttribPointer(2, 2, GL_FLOAT, false, Float.BYTES * 8, Float.BYTES * 6);
+		glEnableVertexAttribArray(2);
+		
+		glBindVertexArray(vao.get(0));
 		
 	}
 }
