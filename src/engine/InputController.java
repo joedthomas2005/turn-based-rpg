@@ -1,3 +1,4 @@
+package engine;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.*;
 
@@ -12,13 +13,16 @@ public class InputController {
 	private float sensitivity;
 	
 	public InputController(Window window, float sensitivity) {
+		
 		this.sensitivity = sensitivity;
 		this.lastX = window.getWidth() / 2;
 		this.lastY = window.getHeight() / 2;
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> {
+		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> 
+		{
 			keys[key] = action == GLFW_PRESS ? true : action == GLFW_RELEASE ? false : keys[key];
 		}));
+		
 		glfwSetCursorPosCallback(window.getWindow(), GLFWCursorPosCallback.create((event_window, x, y) -> {
 			
 			if (firstMouse) {

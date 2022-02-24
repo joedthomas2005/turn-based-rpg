@@ -1,3 +1,4 @@
+package engine;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
