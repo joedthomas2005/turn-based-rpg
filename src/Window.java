@@ -9,8 +9,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Window {
 	
-	private int width;
-	private int height;
 	private int vsync;
 	private long window;
 	private long monitor;
@@ -21,14 +19,12 @@ public class Window {
 	
 	public Window(int width, int height, CharSequence title, int vsync, Boolean fullScreen) {
 		
-		this.width = width;
-		this.height = height;
 		this.title = title;
 		this.vsync = vsync;
 		
 		MemoryStack stack = MemoryStack.stackPush();
-		IntBuffer pWidth = stack.mallocInt(1);
-		IntBuffer pHeight = stack.mallocInt(1);
+		pWidth = stack.mallocInt(1);
+		pHeight = stack.mallocInt(1);
 		
 		this.monitor = 0;
 		this.window = 0;
@@ -40,17 +36,21 @@ public class Window {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
-		this.window = glfwCreateWindow(width, height, title, monitor, 0);
+		this.window = glfwCreateWindow(width, height, this.title, monitor, 0);
 		
 		if(this.window == 0) {
 			System.err.println("GLFW FAILED LOADING WINDOW");
 		}
 		
 		glfwMakeContextCurrent(window);
-		glfwSwapInterval(vsync);
+		glfwSwapInterval(this.vsync);
 		glfwGetFramebufferSize(window, pWidth, pHeight);
 		
 		glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {	//Pogger.
+			this.pWidth.clear();
+			this.pWidth.put(newWidth);
+			this.pHeight.clear();
+			this.pHeight.put(newHeight);
 			glViewport(0,0,newWidth,newHeight);
 			}));
 		
@@ -65,23 +65,31 @@ public class Window {
 		glClearColor(r,g,b,a);
 	}
 	
-	Boolean shouldClose() {
+	public Boolean shouldClose() {
 		return glfwWindowShouldClose(this.window);
 	}
 	
-	long getWindow() {
+	public long getWindow() {
 		return this.window;	
 	}
 	
-	void update() {
+	public void update() {
 		glfwSwapBuffers(this.window);
 		glfwPollEvents();
 	}
 	
-	void destroy() {
+	public void destroy() {
 		glfwDestroyWindow(this.window);
 		glfwTerminate();
 		
+	}
+	
+	public float getWidth() {
+		return pWidth.get(0);
+	}
+	
+	public float getHeight() {
+		return pHeight.get(0);
 	}
 	
 }

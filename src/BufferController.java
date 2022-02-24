@@ -1,19 +1,12 @@
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.glfw.GLFW.*;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.*;
 import org.lwjgl.system.*;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL33;
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
-public class Buffers {
+public class BufferController {
 	
 	ArrayList<Float> vertices;
 	ArrayList<Integer> indices;
@@ -21,7 +14,7 @@ public class Buffers {
 	IntBuffer ebo;
 	IntBuffer vbo;
 	
-	public Buffers(ArrayList<Float> vertices, ArrayList<Integer> indices) {
+	public BufferController(ArrayList<Float> vertices, ArrayList<Integer> indices) {
 		this.vertices = vertices;
 		this.indices = indices;
 		
