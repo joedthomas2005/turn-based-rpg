@@ -9,11 +9,12 @@ import engine.BufferController;
 import engine.InputController;
 import engine.ShaderController;
 import engine.Window;
+import engine.exceptions.ShaderException;
 
 
 public class Main {
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws ShaderException, IOException {
 		
 		
 		glfwInit();
@@ -25,10 +26,9 @@ public class Main {
 		
 		@SuppressWarnings("unused")
 		BufferController bufferManager = new BufferController(vertices,indices);
-		@SuppressWarnings("unused")
+		
 		InputController inputController = new InputController(window, 0.1f);
-		@SuppressWarnings("unused")
-		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
+		
 		
 		
 		window.setColor(1, 1, 0, 1);
@@ -36,7 +36,7 @@ public class Main {
 		while(!window.shouldClose()) {
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			System.out.println(window.getWidth());
+			System.out.println(inputController.rightMouseDown() + " " + inputController.getMouseX());
 			window.update();
 			
 		}
