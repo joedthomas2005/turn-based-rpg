@@ -1,4 +1,7 @@
 package engine;
+//import static com.sun.jna.platform.win32.WinUser.*;
+//import static com.sun.jna.platform.win32.User32.INSTANCE;
+
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.*;
 
@@ -24,7 +27,7 @@ public class InputController {
 		this.lastX = window.getWidth() / 2;
 		this.lastY = window.getHeight() / 2;
 		
-		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		//glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> 
 		{
 			keys[key] = action == GLFW_PRESS ? true : action == GLFW_RELEASE ? false : keys[key];
@@ -34,32 +37,31 @@ public class InputController {
 		glfwSetCursorPosCallback(window.getWindow(), GLFWCursorPosCallback.create((event_window, x, y) -> {
 			
 			xScreenCoords = x;
-			yScreenCoords = y;
+			yScreenCoords = window.getHeight() - y;
 			
-			while(xScreenCoords > window.getWidth()) {
+			if(xScreenCoords > window.getWidth()) {
 				xScreenCoords = window.getWidth();
 			}
 			
-			while(yScreenCoords > window.getHeight()) {
+			if(yScreenCoords > window.getHeight()) {
 				yScreenCoords = window.getHeight();
 			}
 			
-			while(xScreenCoords < 0) {
+			if(xScreenCoords < 0) {
 				xScreenCoords = 0;
 			}
 			
-			while(yScreenCoords < 0) {
+			if(yScreenCoords < 0) {
 				yScreenCoords = 0;
 			}
 			
-			while (y < 0)
 			if (firstMouse) {
 				lastX = x;
 				lastY = y;
 				firstMouse = false;
 			}
 			
-			
+		//	INSTANCE.SetCursorPos(0,0);
 			double xOffset = this.sensitivity * (x - lastX);
 			double yOffset = this.sensitivity * (y - lastY);
 			lastX = x;

@@ -36,7 +36,7 @@ public class Main {
 		while(!window.shouldClose()) {
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			System.out.println(inputController.rightMouseDown() + " " + inputController.getMouseX());
+			System.out.println(inputController.rightMouseDown() + " " + inputController.getMouseX() + "," + inputController.getMouseY());
 			window.update();
 			
 		}
