@@ -15,9 +15,17 @@ public class BufferController {
 	IntBuffer ebo;
 	IntBuffer vbo;
 	
-	public BufferController(ArrayList<Float> vertices, ArrayList<Integer> indices) {
-		this.vertices = vertices;
-		this.indices = indices;
+	public BufferController() {
+		this.vertices = new ArrayList<Float>();
+		this.indices = new ArrayList<Integer>();
+	}
+	
+	public int[] AddItem(ArrayList<Float> vertices, ArrayList<Integer> indices){
+		int startIndex = this.vertices.size();
+		object.
+	}
+	
+	public void bind() {
 		
 		MemoryStack stack = MemoryStack.stackPush();
 		this.vao = stack.mallocInt(1);
@@ -59,6 +67,5 @@ public class BufferController {
 		glEnableVertexAttribArray(2);
 		
 		glBindVertexArray(vao.get(0));
-		
 	}
 }

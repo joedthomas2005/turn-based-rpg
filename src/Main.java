@@ -8,6 +8,7 @@ import java.util.Arrays;
 import engine.BufferController;
 import engine.InputController;
 import engine.ShaderController;
+import engine.Square;
 import engine.Window;
 import engine.exceptions.ShaderException;
 
@@ -25,7 +26,8 @@ public class Main {
 		ArrayList<Integer> indices = new ArrayList<Integer>(Arrays.asList(1,3,5,6));
 		
 		@SuppressWarnings("unused")
-		BufferController bufferManager = new BufferController(vertices,indices);
+		BufferController bufferManager = new BufferController();
+		Square.initialise(bufferManager);
 		
 		InputController inputController = new InputController(window, 0.1f);
 		
