@@ -1,6 +1,5 @@
 package engine.exceptions;
 
-@SuppressWarnings("serial")
 public class CustomException extends Exception{
 	
 	protected static String titleCase(String string) {

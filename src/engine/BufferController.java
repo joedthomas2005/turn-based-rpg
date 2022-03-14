@@ -6,14 +6,15 @@ import org.lwjgl.system.*;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class BufferController {
 	
-	ArrayList<Float> vertices;
-	ArrayList<Integer> indices;
-	IntBuffer vao;
-	IntBuffer ebo;
-	IntBuffer vbo;
+	private ArrayList<Float> vertices;
+	private ArrayList<Integer> indices;
+	private IntBuffer vao;
+	private IntBuffer ebo;
+	private IntBuffer vbo;
 	
 	public BufferController() {
 		this.vertices = new ArrayList<Float>();
@@ -21,8 +22,17 @@ public class BufferController {
 	}
 	
 	public int[] AddItem(ArrayList<Float> vertices, ArrayList<Integer> indices){
-		int startIndex = this.vertices.size();
-		object.
+		int startIndex = this.indices.size();
+		int endIndex = this.indices.size() + indices.size() - 2;
+		int EBOvertexOffset = Collections.max(indices);
+		for(float vertex : vertices) {
+			this.vertices.add(vertex);
+		}
+		for(int index : indices) {
+			this.indices.add(index + EBOvertexOffset);
+		}
+		
+		return new int[]{startIndex, endIndex};
 	}
 	
 	public void bind() {

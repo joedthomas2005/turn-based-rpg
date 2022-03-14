@@ -6,6 +6,7 @@ public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix4f trans;
+	public abstract void draw(ShaderController controller);
 	protected GameObject(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale) {
 		this.x = x;
 		this.y = y;
