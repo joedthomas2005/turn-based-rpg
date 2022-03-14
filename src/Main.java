@@ -1,45 +1,53 @@
-
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-
+import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.stb.STBImage.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.lwjgl.opengl.GLUtil;
+
 import engine.BufferController;
+import engine.Camera;
 import engine.InputController;
 import engine.ShaderController;
 import engine.Square;
 import engine.Window;
+import engine.exceptions.DrawElementsException;
 import engine.exceptions.ShaderException;
+import engine.exceptions.TextureException;
 
 
 public class Main {
 	
-	public static void main(String[] args) throws ShaderException, IOException {
+	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException {
 		
 		
 		glfwInit();
-		
+		//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 		Window window = new Window(900,800, "Turn Based RPG", 1, false);
+		//GLUtil.setupDebugMessageCallback();
+		stbi_set_flip_vertically_on_load(true);
 		
-		ArrayList<Float> vertices = new ArrayList<Float>(Arrays.asList(1.2f,3.2f,5.5f,6.6f));
-		ArrayList<Integer> indices = new ArrayList<Integer>(Arrays.asList(1,3,5,6));
-		
-		@SuppressWarnings("unused")
 		BufferController bufferManager = new BufferController();
 		Square.initialise(bufferManager);
-		
+		bufferManager.bind();
 		InputController inputController = new InputController(window, 0.1f);
+		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
+		Camera camera = new Camera(0,0,0,0,0);
 		
+		Square square = new Square(0,0,0,0,0,0,1,1,"awesomeface.png");
 		
-		
-		window.setColor(1, 1, 0, 1);
-		
+		window.setColor(0, 0, 0, 1);
+		shaderController.use(camera.getView());
+
 		while(!window.shouldClose()) {
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			System.out.println(inputController.rightMouseDown() + " " + inputController.getMouseX() + "," + inputController.getMouseY());
+			square.draw(shaderController);
+			camera.setRot(inputController.getPitch(), 90 + inputController.getYaw());
+			//System.out.println(camera.getPitch());
+			//System.out.println(camera.getYaw());
 			window.update();
 			
 		}

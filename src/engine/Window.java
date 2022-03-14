@@ -47,7 +47,7 @@ public class Window {
 		glfwSwapInterval(this.vsync);
 		glfwGetFramebufferSize(window, pWidth, pHeight);
 		
-		glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {	//Pogger.
+		glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {
 			this.pWidth.clear();
 			this.pWidth.put(newWidth);
 			this.pHeight.clear();

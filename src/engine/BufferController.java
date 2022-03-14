@@ -23,8 +23,12 @@ public class BufferController {
 	
 	public int[] AddItem(ArrayList<Float> vertices, ArrayList<Integer> indices){
 		int startIndex = this.indices.size();
-		int endIndex = this.indices.size() + indices.size() - 2;
-		int EBOvertexOffset = Collections.max(indices);
+		int numIndices = indices.size();
+		int EBOvertexOffset = 0;
+		if(this.indices.size() > 0) {
+			EBOvertexOffset = Collections.max(this.indices);
+		}
+		System.out.println("Vertices offset by" + EBOvertexOffset);
 		for(float vertex : vertices) {
 			this.vertices.add(vertex);
 		}
@@ -32,7 +36,7 @@ public class BufferController {
 			this.indices.add(index + EBOvertexOffset);
 		}
 		
-		return new int[]{startIndex, endIndex};
+		return new int[]{startIndex, numIndices};
 	}
 	
 	public void bind() {
@@ -54,7 +58,7 @@ public class BufferController {
 		float[] vertexArray = new float[vertices.size()];
 		for (int i = 0; i < vertices.size(); i++) {
 			vertexArray[i] = (float)vertices.get(i);
-			
+			System.out.println(vertexArray[i]);
 		}
 		
 		glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW);
@@ -63,19 +67,17 @@ public class BufferController {
 		int[] indexArray = new int[indices.size()];
 		for (int i = 0; i < indices.size(); i++) {
 			indexArray[i] = (int)indices.get(i);
+			System.out.println(indexArray[i]);
 		}
 		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexArray, GL_STATIC_DRAW);
 		
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, Float.BYTES * 8, 0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, Float.BYTES * 5, 0);
 		glEnableVertexAttribArray(0);
-		
-		glVertexAttribPointer(1, 3, GL_FLOAT, false, Float.BYTES * 8, Float.BYTES * 3);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, Float.BYTES * 5, Float.BYTES * 3);
 		glEnableVertexAttribArray(1);
-		
-		glVertexAttribPointer(2, 2, GL_FLOAT, false, Float.BYTES * 8, Float.BYTES * 6);
-		glEnableVertexAttribArray(2);
-		
+		//System.out.println("Vao character 0: " + vao.get(0));
+		System.out.println("Vao = " + vao.get(0));
 		glBindVertexArray(vao.get(0));
 	}
 }
