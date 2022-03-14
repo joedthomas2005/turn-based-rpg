@@ -2,10 +2,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import org.lwjgl.opengl.GLUtil;
 
 import engine.BufferController;
 import engine.Camera;
@@ -25,7 +22,7 @@ public class Main {
 		
 		glfwInit();
 		//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-		Window window = new Window(900,800, "Turn Based RPG", 1, false);
+		Window window = new Window(450,400, "Turn Based RPG", 1, false);
 		//GLUtil.setupDebugMessageCallback();
 		stbi_set_flip_vertically_on_load(true);
 		
