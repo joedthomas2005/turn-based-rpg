@@ -1,21 +1,7 @@
 package engine;
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_LINEAR_MIPMAP_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_RGB;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glGetError;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
-import static org.lwjgl.opengl.GL30.glGenerateMipmap;
-import static org.lwjgl.stb.STBImage.stbi_image_free;
-import static org.lwjgl.stb.STBImage.stbi_load;
 
-import java.nio.ByteBuffer;
+import static org.lwjgl.opengl.GL11.glGetError;
+
 
 import org.joml.*;
 
@@ -23,52 +9,33 @@ import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
 import engine.exceptions.TextureLoadException;
 import globals.ID_MANAGER;
-import globals.PATHS;
 
 public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix4f trans = new Matrix4f();
-	public abstract void draw(ShaderController controller) throws TextureBindException, DrawElementsException;
+	public abstract void draw(ShaderController controller, Camera camera) throws TextureBindException, DrawElementsException, CloneNotSupportedException;
 	private int ID;
 	protected String texturePath;
 	protected int textureID;
+	protected Boolean visible;
 	
-	private int[] texWidth = new int[1];
-	private int[] texHeight = new int[1];
-	private int[] nrChannels = new int[1];
-	
-	protected GameObject(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, String texture) throws TextureLoadException {
+	protected GameObject(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureLoadException {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.pitch = pitch;
 		this.yaw = yaw;
-		this.roll = roll;
+		this.roll = roll; 
 		this.xScale = xScale;
 		this.yScale = yScale;
+		this.visible = true;
 		this.ID = ID_MANAGER.RequestID();
 		ID_MANAGER.NewObject(this);
 		glGetError();
 		
-		this.texturePath = PATHS.TextureDir + texture;
-		ByteBuffer texData = stbi_load(texturePath, texWidth, texHeight, nrChannels, 3);
-		texData.flip();
-		textureID = glGenTextures();
-		
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth[0], texHeight[0], 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
-		
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		
-		int err = glGetError();
-		if(err != 0) {
-			throw new TextureLoadException(texturePath, Integer.toString(err));
-		}
-		
-		stbi_image_free(texData);
+		this.texturePath = texture;
+		this.textureID = textureManager.getTexture(texture);
 	
 	}
 	
@@ -84,6 +51,7 @@ public abstract class GameObject {
 		return texturePath;
 	}
 	
+
 	public void move(float x, float y, float z) {
 		this.x += x;
 		this.y += y;
@@ -96,10 +64,12 @@ public abstract class GameObject {
 	
 	public void setY(float y) {
 		this.y = y;
+
 	}
 	
 	public void setZ(float z) {
 		this.z = z;
+
 	}
 	
 	
@@ -135,8 +105,18 @@ public abstract class GameObject {
 	}
 	
 	protected void genTransformMatrix() {
-		this.trans = new Matrix4f().translate(x,y,z).rotateXYZ(pitch,yaw,roll).scale(xScale,yScale,1);
+		this.trans.identity().translate(x,y,z).rotateXYZ(pitch,yaw,roll).scale(xScale,yScale,1);
 	}
 	
+	public float getX() {
+		return x;
+	}
 	
+	public float getY() {
+		return y;
+	}
+	
+	public float getZ() {
+		return z;
+	}
 }

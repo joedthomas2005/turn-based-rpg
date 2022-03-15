@@ -3,6 +3,9 @@ package engine;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
 import engine.exceptions.TextureException;
@@ -17,29 +20,51 @@ public class Square extends GameObject{
 	private static ArrayList<Float> vertices = new ArrayList<Float>();
 	private static ArrayList<Integer> indices = new ArrayList<Integer>();
 	
-	public Square(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, String texture) throws TextureException{
-		super(x,y,z,pitch,yaw,roll,xScale,yScale, texture);
+	public Square(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureException{
+		super(x,y,z,pitch,yaw,roll,xScale,yScale, texture, textureManager);
 				
 	}
 		
-	public void draw(ShaderController controller) throws TextureBindException, DrawElementsException {
-		this.genTransformMatrix();
-		//System.out.println("Texture id = " + this.textureID);
-		glBindTexture(GL_TEXTURE_2D, this.textureID);
-		int err = glGetError();
-		if(err != 0) {
-			throw new TextureBindException(this);
+	public void draw(ShaderController controller, Camera camera) throws TextureBindException, DrawElementsException {
+
+		if(camera.getMoved()) {
+			checkVisible(camera);
 		}
-		//System.out.println("Texture bound successfully, drawing.");
-		controller.setMat4f("transform", this.trans);
-		//System.out.println("Draw call: GL_TRIANGLES, " + numIndices + ", GL_UNSIGNED_INT, " + startIndex*Integer.BYTES);
-		glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, startIndex * Integer.BYTES);
-		err = glGetError();
-		if(err != 0) {
-			throw new DrawElementsException(this, err);
+		
+		if(visible) {
+		
+			this.genTransformMatrix();
+		
+			glBindTexture(GL_TEXTURE_2D, this.textureID);
+			int err = glGetError();
+			if(err != 0) {
+				throw new TextureBindException(this);
+			}
+		
+			controller.setMat4f("transform", this.trans);
+		
+			glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, startIndex * Integer.BYTES);
+			err = glGetError();
+			if(err != 0) {
+				throw new DrawElementsException(this, err);
+			}
 		}
 	}
 	
+	private void checkVisible(Camera camera) {
+		
+		Matrix4f camTransform = camera.getView();
+		Vector3f objectposition = new Vector3f(x, y, z);
+		objectposition = camTransform.transformPosition(objectposition);
+	
+		if(objectposition.x < 1 && objectposition.x > -1 && objectposition.y < 1 && objectposition.y > -1) {
+			this.visible = true;
+		}
+		else {
+			this.visible = false;
+		}
+		
+	}
 	public static void initialise(BufferController buffers) {
 		
 		for(int w = 1; w >= -1; w -= 2) {

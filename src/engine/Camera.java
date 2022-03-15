@@ -6,12 +6,17 @@ public class Camera {
 	private Matrix4f view = new Matrix4f();
 	private float pitch,yaw;
 	private Vector3f position;
+	private Boolean moved = true;
 	
 	public Camera(float x, float y, float z, float pitch, float yaw){
 		this.position = new Vector3f(x,y,z);
 		this.pitch = pitch;
 		this.yaw = yaw;
 		genViewMatrix();
+	}
+	
+	public void update() {
+		this.moved = false;
 	}
 	
 	public void genViewMatrix() {
@@ -29,29 +34,34 @@ public class Camera {
 		this.position.x += x;
 		this.position.y += y;
 		this.position.z += z;
-		
+		this.moved = true;
 		genViewMatrix();
+		
 	}
 	
 	public void rotate(float pitch, float yaw) {
 		this.pitch += pitch;
 		this.yaw += yaw;
+		this.moved = true;
 		genViewMatrix();
 	}
 	
 	public void setPos(float x, float y, float z) {
 		this.position = new Vector3f(x,y,z);
+		this.moved = true;
 		genViewMatrix();
 	}
 	
 	public void setPos(Vector3f position) {
 		this.position = position;
+		this.moved = true;
 		genViewMatrix();
 	}
 	
 	public void setRot(float pitch, float yaw) {
 		this.pitch = pitch;
 		this.yaw = yaw;
+		this.moved = true;
 		genViewMatrix();
 	}
 	
@@ -81,5 +91,9 @@ public class Camera {
 
 	public float getZ(){
 		return position.z;
+	}
+	
+	public Boolean getMoved() {
+		return moved;
 	}
 }

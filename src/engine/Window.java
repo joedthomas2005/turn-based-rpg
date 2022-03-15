@@ -13,8 +13,8 @@ public class Window {
 	private int vsync;
 	private long window;
 	private long monitor;
-	private IntBuffer pWidth;
-	private IntBuffer pHeight;
+	private int width;
+	private int height;
 	
 	private CharSequence title;
 	
@@ -23,43 +23,42 @@ public class Window {
 		this.title = title;
 		this.vsync = vsync;
 		
-		MemoryStack stack = MemoryStack.stackPush();
-		pWidth = stack.mallocInt(1);
-		pHeight = stack.mallocInt(1);
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			IntBuffer pWidth = stack.mallocInt(1);
+			IntBuffer pHeight = stack.mallocInt(1);
 		
-		this.monitor = 0;
-		this.window = 0;
+			this.monitor = 0;
+			this.window = 0;
 		
-		if(fullScreen) {
-			this.monitor = glfwGetPrimaryMonitor();
+			if(fullScreen) {
+				this.monitor = glfwGetPrimaryMonitor();
+			}
+		
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
+			this.window = glfwCreateWindow(width, height, this.title, monitor, 0);
+		
+			if(this.window == 0) {
+				System.err.println("GLFW FAILED LOADING WINDOW");
+			}
+		
+			glfwMakeContextCurrent(window);
+			glfwSwapInterval(this.vsync);
+			glfwGetFramebufferSize(window, pWidth, pHeight);
+			this.width = pWidth.get();
+			this.height = pHeight.get();
+			glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {
+				this.width = newWidth;
+				this.height = newHeight;
+				glViewport(0,0,newWidth,newHeight);
+				}));
 		}
-		
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
-		this.window = glfwCreateWindow(width, height, this.title, monitor, 0);
-		
-		if(this.window == 0) {
-			System.err.println("GLFW FAILED LOADING WINDOW");
-		}
-		
-		glfwMakeContextCurrent(window);
-		glfwSwapInterval(this.vsync);
-		glfwGetFramebufferSize(window, pWidth, pHeight);
-		
-		glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {
-			this.pWidth.clear();
-			this.pWidth.put(newWidth);
-			this.pHeight.clear();
-			this.pHeight.put(newHeight);
-			glViewport(0,0,newWidth,newHeight);
-			}));
-		
 		GL.createCapabilities();
 	}
 	
 	public void initViewport() {
-		glViewport(0, 0, this.pWidth.get(0), this.pHeight.get(0));
+		glViewport(0, 0, width, height);
 	}
 	
 	public void setColor(float r, float g, float b, float a) {
@@ -86,11 +85,11 @@ public class Window {
 	}
 	
 	public float getWidth() {
-		return pWidth.get(0);
+		return width;
 	}
 	
 	public float getHeight() {
-		return pHeight.get(0);
+		return height;
 	}
 	
 }
