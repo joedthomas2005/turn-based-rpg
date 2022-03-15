@@ -17,11 +17,19 @@ public class Camera {
 	}
 	
 	public void genVectors() {
-		float xFacing = Math.cos(Math.toRadians(this.yaw)) * Math.cos(Math.toRadians(this.pitch));
+		/**float xFacing = Math.cos(Math.toRadians(this.yaw)) * Math.cos(Math.toRadians(this.pitch));
 		float yFacing = Math.sin(Math.toRadians(this.pitch));
 		float zFacing = Math.sin(Math.toRadians(this.yaw)) * Math.cos(Math.toRadians(this.pitch));
-		this.camForward = new Vector3f(xFacing, yFacing, zFacing).normalize();
-		this.view = new Matrix4f().lookAt(position, position.add(camForward), upGlobal);
+		//this.camForward = new Vector3f(xFacing, yFacing, zFacing).normalize();
+		this.camForward = new Vector3f(0.0f,0.0f,0.0f);
+		System.out.println("camForward: " + camForward.toString());
+		System.out.println("Position: " + position.toString());
+		System.out.println("UpGlobal: " + upGlobal.toString());
+		System.out.println("Position + camForward: " + position.add(camForward).toString());
+		this.view = new Matrix4f();
+		this.view = this.view.lookAt(position, camForward, upGlobal);
+		**/
+		this.view = new Matrix4f().translate(this.position);
 	}
 	
 	public void move(float x, float y, float z, Boolean useGlobal) {

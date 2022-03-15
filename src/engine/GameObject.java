@@ -135,7 +135,7 @@ public abstract class GameObject {
 	}
 	
 	protected void genTransformMatrix() {
-		this.trans = new Matrix4f().translate(x,y,z).rotateXYZ(pitch,yaw,roll);
+		this.trans = new Matrix4f().translate(x,y,z).rotateXYZ(pitch,yaw,roll).scale(xScale,yScale,1);
 	}
 	
 	

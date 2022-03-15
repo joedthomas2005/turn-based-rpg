@@ -57,7 +57,6 @@ public class ShaderController {
 	
 	public void use(Matrix4f view) {
 		glUseProgram(ID);
-		System.out.println("Using shader " + ID);
 		setMat4f("view", view);
 		setMat4f("projection", projection);
 	}
