@@ -24,6 +24,7 @@ import engine.exceptions.TextureBindException;
 import engine.exceptions.TextureLoadException;
 import globals.ID_MANAGER;
 import globals.PATHS;
+
 public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
@@ -83,58 +84,58 @@ public abstract class GameObject {
 		return texturePath;
 	}
 	
-	void move(float x, float y, float z) {
+	public void move(float x, float y, float z) {
 		this.x += x;
 		this.y += y;
 		this.z += z;
 	}
 	
-	void setX(float x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 	
-	void setY(float y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 	
-	void setZ(float z) {
+	public void setZ(float z) {
 		this.z = z;
 	}
 	
 	
-	void rotate(float pitch, float yaw, float roll) {
+	public void rotate(float pitch, float yaw, float roll) {
 		this.pitch += pitch;
 		this.yaw += yaw;
 		this.roll += roll;
 	}
 	
-	void setPitch(float pitch) {
+	public void setPitch(float pitch) {
 		this.pitch = pitch;
 	}
 	
-	void setYaw(float yaw) {
+	public void setYaw(float yaw) {
 		this.yaw = yaw;
 	}
 	
-	void setRoll(float roll) {
+	public void setRoll(float roll) {
 		this.roll = roll;
 	}
 	
-	void scale(float x, float y) {
+	public void scale(float x, float y) {
 		this.xScale *= x;
 		this.yScale *= y;
 	}
 	
-	void setXScale(float x) {
+	public void setXScale(float x) {
 		this.xScale = x;
 	}
 	
-	void setYScale(float y) {
+	public void setYScale(float y) {
 		this.yScale = y;
 	}
 	
-	void genTransformMatrix() {
-		this.trans = new Matrix4f();
+	protected void genTransformMatrix() {
+		this.trans = new Matrix4f().translate(x,y,z).rotateXYZ(pitch,yaw,roll);
 	}
 	
 	

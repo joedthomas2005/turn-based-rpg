@@ -26,7 +26,9 @@ public class InputController {
 		this.rmbDown = false;
 		this.lastX = window.getWidth() / 2;
 		this.lastY = window.getHeight() / 2;
-		
+		for(int i = 0; i < GLFW_KEY_LAST; i++){
+			keys[i] = false;
+		}
 		//glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> 
 		{
