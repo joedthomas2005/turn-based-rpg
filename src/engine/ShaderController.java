@@ -52,7 +52,7 @@ public class ShaderController {
 		glDeleteShader(vShader);
 		glDeleteShader(fShader);
 		
-		this.projection = new Matrix4f().perspective((float)Math.toRadians(45), window.getWidth()/window.getHeight(), 0.1f, 100.0f);
+		this.projection = new Matrix4f().perspective((float)Math.toRadians(45), window.getWidth()/window.getHeight(), 0.1f, -2 * window.getWidth());
 	}
 	
 	public void use(Matrix4f view) {
@@ -71,5 +71,6 @@ public class ShaderController {
 	
 		glUniformMatrix4fv(glGetUniformLocation(ID, name), false, matrixBuffer);
 	}
+	
 	
 }

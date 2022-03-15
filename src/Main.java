@@ -3,9 +3,13 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.joml.Vector3f;
+
 import java.lang.Math;
 import engine.BufferController;
 import engine.Camera;
+import engine.GameObject;
 import engine.InputController;
 import engine.ShaderController;
 import engine.Square;
@@ -22,7 +26,7 @@ public class Main {
 		
 		glfwInit();
 		//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-		Window window = new Window(400,400, "Turn Based RPG", 1, false);
+		Window window = new Window(2560,1440, "Turn Based RPG", 1, true);
 		//GLUtil.setupDebugMessageCallback();
 		stbi_set_flip_vertically_on_load(true);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);	
@@ -33,8 +37,9 @@ public class Main {
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
 		Camera camera = new Camera(0,0,0,0,0);
 		
-		ArrayList<Square> squares = new ArrayList<Square>();
-		squares.add(new Square(0,0,0,0,0,0,0.15f,0.2f,"cursor.png"));	
+		ArrayList<GameObject> objects = new ArrayList<GameObject>();
+		objects.add(new Square(0,0,-1f,0,0,0,0.25f,0.25f,"awesomeface.png"));
+		objects.add(new Square(0,0,-1f,0,0,0,0.1f,0.1f,"cursor.png"));	
 
 		window.setColor(0, 0, 0, 1);
 		
@@ -42,8 +47,8 @@ public class Main {
 		while(!window.shouldClose()) {
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			for(Square square : squares){
-				square.draw(shaderController);
+			for(GameObject object : objects){
+				object.draw(shaderController);
 			}
 
 			if(inputController.isKeyDown(GLFW_KEY_A)){
@@ -55,10 +60,15 @@ public class Main {
 				shaderController.use(camera.getView());
 			}
 		
-			squares.get(0).setX((float)inputController.getMouseX()/(float)window.getWidth());
-			System.out.println("x:"+inputController.getMouseX());
-			System.out.println("y:"+inputController.getMouseY());		
-			squares.get(0).setY((float)inputController.getMouseY()/(float)window.getHeight());
+			float screenX = (float) (inputController.getMouseX()* 2 / window.getWidth() - 1.0f);
+			float screenY = (float) (1.0f - 2.0f * inputController.getMouseX() / window.getHeight());
+			Vector3f screen = new Vector3f(screenX, screenY, 1.0f);
+		//	Vector3f world = shaderController.getProjection().inverse().mul(screen);
+
+
+			objects.get(1).setX((float));
+
+			objects.get(1).setY(0.0f - (float) (1.0f - 2.0f * inputController.getMouseY() / window.getHeight()));
 			window.update();
 			
 		}

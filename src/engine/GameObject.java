@@ -56,9 +56,10 @@ public abstract class GameObject {
 		ByteBuffer texData = stbi_load(texturePath, texWidth, texHeight, nrChannels, 3);
 		texData.flip();
 		textureID = glGenTextures();
+		
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth[0], texHeight[0], 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
-		System.out.println(texData);
+		
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
