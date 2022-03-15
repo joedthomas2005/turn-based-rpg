@@ -49,7 +49,6 @@ public abstract class GameObject {
 		this.yScale = yScale;
 		this.ID = ID_MANAGER.RequestID();
 		ID_MANAGER.NewObject(this);
-		
 		glGetError();
 		
 		this.texturePath = PATHS.TextureDir + texture;

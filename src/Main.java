@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 import java.lang.Math;
 import engine.BufferController;
 import engine.Camera;
+import engine.CameraController;
 import engine.GameObject;
 import engine.InputController;
 import engine.ShaderController;
@@ -23,54 +24,48 @@ public class Main {
 	
 	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException {
 		
-		
+		//Enable GLFW
 		glfwInit();
-		//glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-		Window window = new Window(2560,1440, "Turn Based RPG", 1, true);
-		//GLUtil.setupDebugMessageCallback();
-		stbi_set_flip_vertically_on_load(true);
+
+		//Create window and context
+		Window window = new Window(1920,1080, "Turn Based RPG", 1, true);
+		window.setColor(0, 0, 0, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);	
+
+		//Setup required components and controllers
 		BufferController bufferManager = new BufferController();
-		Square.initialise(bufferManager);
-		bufferManager.bind();
+		Camera camera = new Camera(0,0,0,0,0);
 		InputController inputController = new InputController(window, 0.1f);
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
-		Camera camera = new Camera(0,0,0,0,0);
-		
-		ArrayList<GameObject> objects = new ArrayList<GameObject>();
-		objects.add(new Square(0,0,-1f,0,0,0,0.25f,0.25f,"awesomeface.png"));
-		objects.add(new Square(0,0,-1f,0,0,0,0.1f,0.1f,"cursor.png"));	
+		CameraController cameraController = new CameraController(camera, shaderController, inputController);
+		stbi_set_flip_vertically_on_load(true);
 
-		window.setColor(0, 0, 0, 1);
+		//Initialise any shapes that will be used and finally bind the VAO
+		Square.initialise(bufferManager);
+		bufferManager.bind();
 		
-		shaderController.use(camera.getView());
+		//Create object array. This will be handled by a controller later 
+		ArrayList<GameObject> objects = new ArrayList<GameObject>();
+		
+		
 		while(!window.shouldClose()) {
-			
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//Clear window for drawing
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			//Draw loop
 			for(GameObject object : objects){
 				object.draw(shaderController);
 			}
 
-			if(inputController.isKeyDown(GLFW_KEY_A)){
-				camera.move(0.1f, 0, 0, true);
-				shaderController.use(camera.getView());
+			if(inputController.isKeyDown(GLFW_KEY_SPACE)){
+				objects.add(new Square(cameraController.getCamera().getX(),
+					cameraController.getCamera().getY(),
+					cameraController.getCamera().getZ() - 1,
+					 0,0,0,0.25f,0.25f,"awesomeface.png"));
 			}
-			if(inputController.isKeyDown(GLFW_KEY_D)){
-				camera.move(-0.1f, 0, 0, true);
-				shaderController.use(camera.getView());
-			}
-		
-			float screenX = (float) (inputController.getMouseX()* 2 / window.getWidth() - 1.0f);
-			float screenY = (float) (1.0f - 2.0f * inputController.getMouseX() / window.getHeight());
-			Vector3f screen = new Vector3f(screenX, screenY, 1.0f);
-		//	Vector3f world = shaderController.getProjection().inverse().mul(screen);
-
-
-			objects.get(1).setX((float));
-
-			objects.get(1).setY(0.0f - (float) (1.0f - 2.0f * inputController.getMouseY() / window.getHeight()));
+			//Perform necessary updates for next frame
+			cameraController.update();
 			window.update();
-			
 		}
 		
 		window.destroy();

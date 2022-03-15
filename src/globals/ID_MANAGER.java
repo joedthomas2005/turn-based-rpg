@@ -13,6 +13,7 @@ public class ID_MANAGER {
 	
 	public static void NewObject(GameObject object) {
 		GameObjects.put(object.getID(), object);
+		System.out.println("NEW OBJECT ID " + object.getID());
 	}
 	
 	public static GameObject GetObjectById(int id) {
@@ -29,6 +30,7 @@ public class ID_MANAGER {
 				maxKey = key;
 			}
 		});
+		System.out.println("NEW ID REQUESTED. GIVING " + (maxKey + 1));
 		return maxKey + 1;
 	}
 }
