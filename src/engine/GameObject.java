@@ -2,8 +2,10 @@ package engine;
 
 import static org.lwjgl.opengl.GL11.glGetError;
 
+import java.util.ArrayList;
 
 import org.joml.*;
+import org.joml.Math;
 
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
@@ -13,7 +15,7 @@ public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix4f trans = new Matrix4f();
-	public abstract void draw(ShaderController controller, Camera camera) throws TextureBindException, DrawElementsException, CloneNotSupportedException;
+	public abstract void draw(ShaderController controller, Camera camera, ArrayList<GameObject> objects) throws TextureBindException, DrawElementsException, CloneNotSupportedException;
 	protected String texturePath;
 	protected int textureID;
 	protected Boolean visible;
@@ -33,6 +35,12 @@ public abstract class GameObject {
 		this.texturePath = texture;
 		this.textureID = textureManager.getTexture(texture);
 	
+	}
+	
+	protected boolean checkVisible(Camera camera, ShaderController shader, ArrayList<GameObject> objects) {
+		
+		return true;
+		
 	}
 	
 	public int getTextureID() {

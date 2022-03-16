@@ -27,7 +27,7 @@ public class Main {
 
 		//Create window and context
 		Window window = new Window(1280,720, "Turn Based RPG", 1, false);
-		window.setColor(0, 0, 0, 1);
+		window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);	
 
 		//Setup required components and controllers
@@ -38,7 +38,8 @@ public class Main {
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
 		CameraController cameraController = new CameraController(camera, shaderController, inputController);
 		TextureController textureController = new TextureController("awesomeface.png", "cursor.png");
-
+		glDepthMask(false);
+		glDisable(GL_DEPTH_TEST);
 		//Initialise any shapes that will be used and finally bind the VAO
 		Square.initialise(bufferManager);
 		bufferManager.bind();
@@ -46,34 +47,25 @@ public class Main {
 		//Create object array. This will be handled by a controller later 
 		ArrayList<GameObject> objects = new ArrayList<GameObject>();
 		
-		
 		while(!window.shouldClose()) {
 			//Clear window for drawing
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			//Draw loop
 			for(GameObject object : objects){
-				object.draw(shaderController, camera);
+				object.draw(shaderController, camera, objects);
 			}
 
 			if(inputController.isKeyDown(GLFW_KEY_SPACE)){
-				objects.add(new Square(cameraController.getCamera().getX(),
-					cameraController.getCamera().getY(),
-					cameraController.getCamera().getZ() - 1,
-					 0,0,0,0.25f,0.25f,"awesomeface.png", textureController));
+				objects.add(new Square((float)inputController.getMouseX(),(float)inputController.getMouseY(),0,
+					 0,0,0,100,100,"awesomeface.png", textureController));
 			}
 			
-			if(inputController.isKeyDown(GLFW_KEY_RIGHT_SHIFT)) {
-				objects.add(new Square(cameraController.getCamera().getX(),
-					cameraController.getCamera().getY(),
-					cameraController.getCamera().getZ() - 1,
-					0,0,0,0.25f,0.25f,"cursor.png", textureController));
-			}
 			//Perform necessary updates for next frame
 			
 			cameraController.update();
 			window.update();
-			//System.gc();
+			System.gc();
 		}
 		
 		window.destroy();

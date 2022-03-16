@@ -53,7 +53,8 @@ public class ShaderController {
 		glDeleteShader(fShader);
 		
 		
-		this.projection.identity().perspective((float)Math.toRadians(45), window.getWidth()/window.getHeight(), 0.1f, 1000f);
+		//this.projection.identity().perspective((float)Math.toRadians(45), window.getWidth()/window.getHeight(), 0.1f, 1000f);
+		this.projection.identity().ortho2D(0, window.getWidth(), 0, window.getHeight());
 		glUseProgram(ID);
 
 	}

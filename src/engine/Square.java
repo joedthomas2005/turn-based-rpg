@@ -1,10 +1,6 @@
 package engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
@@ -24,10 +20,10 @@ public class Square extends GameObject{
 				
 	}
 		
-	public void draw(ShaderController controller, Camera camera) throws TextureBindException, DrawElementsException {
+	public void draw(ShaderController controller, Camera camera, ArrayList<GameObject> otherObjects) throws TextureBindException, DrawElementsException {
 
 		if(camera.getMoved()) {
-			checkVisible(camera);
+			this.visible = this.checkVisible(camera, controller ,otherObjects);
 		}
 		
 		if(visible) {
@@ -50,20 +46,6 @@ public class Square extends GameObject{
 		}
 	}
 	
-	private void checkVisible(Camera camera) {
-		
-		Matrix4f camTransform = camera.getView();
-		Vector3f objectposition = new Vector3f(x, y, z);
-		objectposition = camTransform.transformPosition(objectposition);
-	
-		if(objectposition.x < 1 && objectposition.x > -1 && objectposition.y < 1 && objectposition.y > -1) {
-			this.visible = true;
-		}
-		else {
-			this.visible = false;
-		}
-		
-	}
 	public static void initialise(BufferController buffers) {
 		
 		for(int w = 1; w >= -1; w -= 2) {
