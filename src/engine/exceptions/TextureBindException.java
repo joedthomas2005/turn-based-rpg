@@ -7,6 +7,6 @@ public class TextureBindException extends TextureException{
 
 	public TextureBindException(GameObject object) {
 		super("Texture number " + object.getTextureID() + " loaded from " + object.getTexturePath()
-		+ " failed to bind for object " + object.getID());
+		+ " failed to bind for object");
 	}
 }

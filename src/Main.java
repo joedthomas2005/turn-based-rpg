@@ -4,9 +4,6 @@ import static org.lwjgl.stb.STBImage.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
 import engine.BufferController;
 import engine.Camera;
 import engine.CameraController;
@@ -76,6 +73,7 @@ public class Main {
 			
 			cameraController.update();
 			window.update();
+			//System.gc();
 		}
 		
 		window.destroy();

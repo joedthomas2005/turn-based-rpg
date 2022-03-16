@@ -8,14 +8,12 @@ import org.joml.*;
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
 import engine.exceptions.TextureLoadException;
-import globals.ID_MANAGER;
 
 public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix4f trans = new Matrix4f();
 	public abstract void draw(ShaderController controller, Camera camera) throws TextureBindException, DrawElementsException, CloneNotSupportedException;
-	private int ID;
 	protected String texturePath;
 	protected int textureID;
 	protected Boolean visible;
@@ -30,17 +28,11 @@ public abstract class GameObject {
 		this.xScale = xScale;
 		this.yScale = yScale;
 		this.visible = true;
-		this.ID = ID_MANAGER.RequestID();
-		ID_MANAGER.NewObject(this);
 		glGetError();
 		
 		this.texturePath = texture;
 		this.textureID = textureManager.getTexture(texture);
 	
-	}
-	
-	public int getID() {
-		return ID;
 	}
 	
 	public int getTextureID() {

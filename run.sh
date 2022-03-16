@@ -1,1 +1,1 @@
-java --class-path bin/:lib/* Main
+java --class-path bin/:lib/* -verbose:gc Main

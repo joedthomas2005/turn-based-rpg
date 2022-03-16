@@ -20,6 +20,7 @@ public class BufferController {
 	}
 	
 	public int[] AddItem(ArrayList<Float> vertices, ArrayList<Integer> indices){
+
 		int startIndex = this.indices.size();
 		int numIndices = indices.size();
 		int EBOvertexOffset = 0;
@@ -54,6 +55,7 @@ public class BufferController {
 			glBindBuffer(GL_ARRAY_BUFFER, vbo.get(0));
 		
 			float[] vertexArray = new float[vertices.size()];
+			
 			for (int i = 0; i < vertices.size(); i++) {
 				vertexArray[i] = (float)vertices.get(i);
 				System.out.println(vertexArray[i]);
