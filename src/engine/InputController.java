@@ -9,31 +9,27 @@ public class InputController {
 	
 	private Boolean[] keys = new Boolean[GLFW_KEY_LAST];
 	private Boolean[] firstPressed = new Boolean[GLFW_KEY_LAST];
-	private Boolean firstMouse = true;
-	private double lastX;
-	private double lastY;
+	private Boolean lmbFirstPressed;
+	private boolean rmbFirstPressed;
 	private double xScreenCoords;
 	private double yScreenCoords;
 	private boolean lmbDown;
 	private boolean rmbDown;
-	private float pitch;
-	private float yaw;
-	private float sensitivity;
+	
+	
 	public void reset() {
 		for(int i = 0; i < GLFW_KEY_LAST; i++) {
-			if(firstPressed[i]) {
-				System.out.println("Key was pressed for the first time");
-			}
 			firstPressed[i] = false;
 		}
+		this.lmbFirstPressed = false;
+		this.rmbFirstPressed = false;
 	}
 	public InputController(Window window, float sensitivity) {
 		
-		this.sensitivity = sensitivity;
 		this.lmbDown = false;
 		this.rmbDown = false;
-		this.lastX = window.getWidth() / 2;
-		this.lastY = window.getHeight() / 2;
+		this.lmbFirstPressed = false;
+		this.rmbFirstPressed = false;
 		for(int i = 0; i < GLFW_KEY_LAST; i++){
 			keys[i] = false;
 			firstPressed[i] = false;
@@ -41,53 +37,21 @@ public class InputController {
 		//glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> 
 		{
+			try {
 			keys[key] = action == GLFW_PRESS ? true : action == GLFW_RELEASE ? false : keys[key];
 			firstPressed[key] = action == GLFW_PRESS;
+			}
+			
+			catch(Exception e) {
+				System.err.println("Warning: Unknown key pressed");
+			}
 		}));
 		
 	
 		glfwSetCursorPosCallback(window.getWindow(), GLFWCursorPosCallback.create((event_window, x, y) -> {
 			
 			xScreenCoords = x;
-			yScreenCoords = window.getHeight() - y;
-			
-			if(xScreenCoords > window.getWidth()) {
-				xScreenCoords = window.getWidth();
-			}
-			
-			if(yScreenCoords > window.getHeight()) {
-				yScreenCoords = window.getHeight();
-			}
-			
-			if(xScreenCoords < 0) {
-				xScreenCoords = 0;
-			}
-			
-			if(yScreenCoords < 0) {
-				yScreenCoords = 0;
-			}
-			
-			if (firstMouse) {
-				lastX = x;
-				lastY = y;
-				firstMouse = false;
-			}
-			
-		//	INSTANCE.SetCursorPos(0,0);
-			double xOffset = this.sensitivity * (x - lastX);
-			double yOffset = this.sensitivity * (y - lastY);
-			lastX = x;
-			lastY = y;
-			yaw += xOffset;
-			pitch += yOffset;
-			
-			if(pitch > 89.0f) {
-				pitch = 89.0f;
-			}
-			
-			if(pitch < -89.0f) {
-				pitch = -89.0f;
-			}
+			yScreenCoords = window.getHeight()-y;
 			
 		}));
 		
@@ -97,6 +61,7 @@ public class InputController {
 				
 				if(action == GLFW_PRESS) {
 					lmbDown = true;
+					lmbFirstPressed = true;
 				}
 				else if(action == GLFW_RELEASE) {
 					lmbDown = false;
@@ -107,6 +72,7 @@ public class InputController {
 				
 				if(action == GLFW_PRESS) {
 					rmbDown = true;
+					rmbFirstPressed = true;
 				}
 				else if(action == GLFW_RELEASE) {
 					rmbDown = false;
@@ -118,14 +84,6 @@ public class InputController {
 	
 	public Boolean isKeyDown(int key) {
 		return keys[key];
-	}
-	
-	public float getPitch() {
-		return pitch;
-	}
-	
-	public float getYaw() {
-		return yaw;
 	}
 	
 	public double getMouseX() {
@@ -140,8 +98,16 @@ public class InputController {
 		return lmbDown;
 	}
 	
+	public Boolean leftMouseClicked() {
+		return lmbFirstPressed;
+	}
+	
 	public Boolean rightMouseDown() {
 		return rmbDown;
+	}
+	
+	public Boolean rightMouseClicked() {
+		return rmbFirstPressed;
 	}
 	
 	public Boolean isKeyFirstPressed(int key) {

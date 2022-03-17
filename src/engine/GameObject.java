@@ -34,7 +34,7 @@ public abstract class GameObject {
 		
 		this.texturePath = texture;
 		this.textureID = textureManager.getTexture(texture);
-	
+		genTransformMatrix();
 	}
 	
 	protected boolean checkVisible(Camera camera, ShaderController shader, ArrayList<GameObject> objects) {
@@ -56,19 +56,23 @@ public abstract class GameObject {
 		this.x += x;
 		this.y += y;
 		this.z += z;
+		this.genTransformMatrix();
 	}
 	
 	public void setX(float x) {
 		this.x = x;
+		this.genTransformMatrix();
 	}
 	
 	public void setY(float y) {
 		this.y = y;
+		this.genTransformMatrix();
 
 	}
 	
 	public void setZ(float z) {
 		this.z = z;
+		this.genTransformMatrix();
 
 	}
 	
@@ -81,27 +85,33 @@ public abstract class GameObject {
 	
 	public void setPitch(float pitch) {
 		this.pitch = pitch;
+		this.genTransformMatrix();
 	}
 	
 	public void setYaw(float yaw) {
 		this.yaw = yaw;
+		this.genTransformMatrix();
 	}
 	
 	public void setRoll(float roll) {
 		this.roll = roll;
+		this.genTransformMatrix();
 	}
 	
 	public void scale(float x, float y) {
 		this.xScale *= x;
 		this.yScale *= y;
+		this.genTransformMatrix();
 	}
 	
 	public void setXScale(float x) {
 		this.xScale = x;
+		this.genTransformMatrix();
 	}
 	
 	public void setYScale(float y) {
 		this.yScale = y;
+		this.genTransformMatrix();
 	}
 	
 	protected void genTransformMatrix() {
@@ -110,6 +120,7 @@ public abstract class GameObject {
 	
 	public float getX() {
 		return x;
+		
 	}
 	
 	public float getY() {

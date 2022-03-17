@@ -9,10 +9,30 @@ public class Camera {
 	private Boolean moved = true;
 	
 	public Camera(float x, float y, float z, float pitch, float yaw){
-		this.position = new Vector3f(x,y,z);
+		this.position = new Vector3f(-x,-y,z);
 		this.pitch = pitch;
 		this.yaw = yaw;
 		genViewMatrix();
+	}
+	
+	public Vector3f screenToWorld(Vector3f screenCoords) {
+		Matrix4f invertedView = new Matrix4f(view);
+		invertedView.invert().transformPosition(screenCoords);
+		return screenCoords;
+	}
+	
+	public Vector3f screenToWorld(float x, float y) {
+		return screenToWorld(new Vector3f(x, y, 0));
+	}
+	
+	public Vector3f worldToScreen(Vector3f worldCoords) {
+		Matrix4f view = new Matrix4f(this.view);
+		view.transformPosition(worldCoords);
+		return worldCoords;
+	}
+	
+	public Vector3f worldToScreen(float x, float y) {
+		return worldToScreen(new Vector3f(x,y,0));
 	}
 	
 	public void update() {
@@ -21,29 +41,18 @@ public class Camera {
 	
 	public void genViewMatrix() {
 		
-		view.identity();
-		view.rotate((float)Math.toRadians(pitch), new Vector3f(1,0,0))
-			.rotate((float)Math.toRadians(yaw), new Vector3f(0, 1, 0));
-		
-		view.translate(-position.x, -position.y, position.z);
+		view.identity().translate(position);
 
 	}
 	
-	public void move(float x, float y, float z) {
+	public void move(double x, double y, float z) {
 		
-		this.position.x += x;
-		this.position.y += y;
+		this.position.x += -x;
+		this.position.y += -y;
 		this.position.z += z;
 		this.moved = true;
 		genViewMatrix();
 		
-	}
-	
-	public void rotate(float pitch, float yaw) {
-		this.pitch += pitch;
-		this.yaw += yaw;
-		this.moved = true;
-		genViewMatrix();
 	}
 	
 	public void setPos(float x, float y, float z) {
@@ -57,13 +66,7 @@ public class Camera {
 		this.moved = true;
 		genViewMatrix();
 	}
-	
-	public void setRot(float pitch, float yaw) {
-		this.pitch = pitch;
-		this.yaw = yaw;
-		this.moved = true;
-		genViewMatrix();
-	}
+
 	
 	public float getPitch() {
 		return pitch;

@@ -15,8 +15,8 @@ public class Square extends GameObject{
 
 	private static ArrayList<Float> vertices = new ArrayList<Float>();
 	private static ArrayList<Integer> indices = new ArrayList<Integer>();	
-	public Square(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureException{
-		super(x,y,z,pitch,yaw,roll,xScale,yScale, texture, textureManager);
+	public Square(float x, float y, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureException{
+		super(x,y,0,pitch,yaw,roll,xScale,yScale, texture, textureManager);
 				
 	}
 		
@@ -28,7 +28,6 @@ public class Square extends GameObject{
 		
 		if(visible) {
 		
-			this.genTransformMatrix();
 		
 			glBindTexture(GL_TEXTURE_2D, this.textureID);
 			int err = glGetError();

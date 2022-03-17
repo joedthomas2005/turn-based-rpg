@@ -18,7 +18,7 @@ public class Window {
 	
 	private CharSequence title;
 	
-	public Window(int width, int height, CharSequence title, int vsync, Boolean fullScreen) {
+	public Window(int width, CharSequence title, int vsync, Boolean fullScreen) {
 		
 		this.title = title;
 		this.vsync = vsync;
@@ -37,7 +37,7 @@ public class Window {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
-			this.window = glfwCreateWindow(width, height, this.title, monitor, 0);
+			this.window = glfwCreateWindow(width, width * 9/16, this.title, monitor, 0);
 		
 			if(this.window == 0) {
 				System.err.println("GLFW FAILED LOADING WINDOW");
@@ -48,6 +48,7 @@ public class Window {
 			glfwGetFramebufferSize(window, pWidth, pHeight);
 			this.width = pWidth.get();
 			this.height = pHeight.get();
+			System.out.println(height);
 			glfwSetFramebufferSizeCallback(window, GLFWFramebufferSizeCallback.create((windowPointer, newWidth, newHeight) -> {
 				this.width = newWidth;
 				this.height = newHeight;

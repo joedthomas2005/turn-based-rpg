@@ -18,6 +18,9 @@ public class ShaderController {
 	private int fShader;
 	private int ID;
 	private Matrix4f projection = new Matrix4f();
+	private int viewID;
+	private int projectionID;
+	private int transformID;
 	
 	public ShaderController(String vertShaderPath, String fragShaderPath, Window window) throws ShaderException, IOException{
 		
@@ -53,10 +56,12 @@ public class ShaderController {
 		glDeleteShader(fShader);
 		
 		
-		//this.projection.identity().perspective((float)Math.toRadians(45), window.getWidth()/window.getHeight(), 0.1f, 1000f);
 		this.projection.identity().ortho2D(0, window.getWidth(), 0, window.getHeight());
+		System.out.println(this.projection.toString());
 		glUseProgram(ID);
-
+		viewID = glGetUniformLocation(ID, "view");
+		projectionID = glGetUniformLocation(ID, "projection");
+		transformID = glGetUniformLocation(ID, "transform");
 	}
 	
 	public void setView(Matrix4f view) {
@@ -71,8 +76,19 @@ public class ShaderController {
 	public void setMat4f(String name, Matrix4f matrix) {
 		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 		matrix.get(matrixBuffer);
-	
-		glUniformMatrix4fv(glGetUniformLocation(ID, name), false, matrixBuffer);
+		
+		switch(name) {
+			
+		case "view":
+			glUniformMatrix4fv(viewID, false, matrixBuffer);
+			break;
+		case "projection":
+			glUniformMatrix4fv(projectionID, false, matrixBuffer);
+			break;
+		case "transform":
+			glUniformMatrix4fv(transformID, false, matrixBuffer);
+			break;
+		}
 		matrixBuffer.clear();
 	}
 	

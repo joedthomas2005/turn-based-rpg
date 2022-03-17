@@ -10,6 +10,7 @@ import org.joml.Vector3f;
 import engine.BufferController;
 import engine.Camera;
 import engine.CameraController;
+import engine.Cursor;
 import engine.GameObject;
 import engine.InputController;
 import engine.ShaderController;
@@ -23,94 +24,89 @@ import engine.exceptions.TextureException;
 
 public class Main {
 	
-	private static int frame = 0;
 	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException, CloneNotSupportedException {
 		
 		//Enable GLFW
 		glfwInit();
 
 		//Create window and context
-		Window window = new Window(1280,720, "Turn Based RPG", 1, false);
-		window.setColor(0, 0, 0, 1);
+		Window window = new Window(1920, "Turn Based RPG", 1, true);
+		window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 
 		//Setup required components and controllers
-		stbi_set_flip_vertically_on_load(true);
 		BufferController bufferManager = new BufferController();
 		Camera camera = new Camera(0,0,0,0,0);
-		InputController inputController = new InputController(window, 0.1f);
+		InputController inputController = new InputController(window, 1f);
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
-		CameraController cameraController = new CameraController(camera, shaderController, inputController, 5);
-		TextureController textureController = new TextureController("awesomeface.png", "cursor.png");
-		
-		glDepthMask(false);
-		glDisable(GL_DEPTH_TEST);
+		CameraController cameraController = new CameraController(camera, shaderController, inputController, 10f);
+		TextureController textureController = new TextureController("cursor.png", "placeholder.png");
+
 		//Initialise any shapes that will be used and finally bind the VAO
 		Square.initialise(bufferManager);
 		bufferManager.bind();
-		
+
 		//Create object array. This will be handled by a controller later 
 		ArrayList<GameObject> objects = new ArrayList<GameObject>();		
-		Square cursor = new Square(0,0,0,0,0,0,50,50,"cursor.png", textureController);
+		Cursor cursor = new Cursor(textureController, inputController, camera);
+		
+		double time = glfwGetTime();
+		double lastTime = glfwGetTime();
+		double deltaTime = 0;
+		
+		
 		while(!window.shouldClose()) {
-			//Clear window for drawing
-
+			
+			time = glfwGetTime();
+			deltaTime = (time - lastTime) * 100;
+			
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			//Draw loop
+			cursor.update();
+			
 			for(GameObject object : objects){
 				object.draw(shaderController, camera, objects);
 			}
 			cursor.draw(shaderController, camera, objects);
 			
-			if(inputController.isKeyFirstPressed(GLFW_KEY_SPACE)){
-				Vector3f squarePosition = new Vector3f((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0);
-				Matrix4f cameraTransform = new Matrix4f();
-				camera.getView().get(cameraTransform);
-				cameraTransform.invert().transformPosition(squarePosition);
-				objects.add(new Square(squarePosition.x,squarePosition.y,squarePosition.z,
-					 0,0,0,100,100,"awesomeface.png", textureController));
+			if(inputController.leftMouseClicked()){
+				
+				Vector3f squarePosition = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
+				
+				objects.add(new Square(squarePosition.x,squarePosition.y,
+					 0,0,0,100,100,"placeholder.png", textureController));
 			}
 			
-			if(inputController.isKeyDown(GLFW_KEY_BACKSPACE)){
-				Vector3f worldCoord = new Vector3f((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0);
-				Matrix4f cameraTransform = new Matrix4f();
-				camera.getView().get(cameraTransform);
-				cameraTransform.invert().transformPosition(worldCoord);
+			if(inputController.rightMouseClicked()){
+				
+				Vector3f worldCoord = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
 
 				GameObject toRemove = null;
 				for(GameObject object: objects){
-					if(worldCoord.x < object.getX() + object.getXScale() && worldCoord.x > object.getX() - object.getXScale()){
+					
+					if(worldCoord.x < object.getX() + object.getXScale() && worldCoord.x > object.getX() - object.getXScale() &&
+							worldCoord.y < object.getY() + object.getYScale() && worldCoord.y > object.getY() - object.getYScale()){
 						toRemove = object;
 					}	
 				}
+				
 				if(toRemove != null){
 					objects.remove(toRemove);
 				}
-
 			}
 			
-			Vector3f worldCoord = new Vector3f((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0);
-			Matrix4f cameraTransform = new Matrix4f();
-			camera.getView().get(cameraTransform);
-			cameraTransform.invert().transformPosition(worldCoord);
-			cursor.setX(worldCoord.x);
-			cursor.setY(worldCoord.y);
-			//Perform necessary updates for next frame
-			update(window, inputController, cameraController);
+			update(window, inputController, cameraController, deltaTime);
+			lastTime = time;
 		}
 		
 		window.destroy();
 	}
 	
-	private static void update(Window window, InputController inputController, CameraController cameraController) {
-		cameraController.update();
+	private static void update(Window window, InputController inputController, CameraController cameraController, double deltaTime) {
+		cameraController.update((float)deltaTime);
 		inputController.reset();
 		window.update();
-		if(frame % 600 == 0) {
-			System.gc();
-		}
-		frame += 1;
 	}
 
 }
