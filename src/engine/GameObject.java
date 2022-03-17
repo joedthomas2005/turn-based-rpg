@@ -119,4 +119,11 @@ public abstract class GameObject {
 	public float getZ() {
 		return z;
 	}
+
+	public float getXScale(){
+		return xScale;
+	}
+	public float getYScale(){
+		return yScale;
+	}
 }

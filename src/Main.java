@@ -4,6 +4,9 @@ import static org.lwjgl.stb.STBImage.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import engine.BufferController;
 import engine.Camera;
 import engine.CameraController;
@@ -36,7 +39,7 @@ public class Main {
 		Camera camera = new Camera(0,0,0,0,0);
 		InputController inputController = new InputController(window, 0.1f);
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
-		CameraController cameraController = new CameraController(camera, shaderController, inputController);
+		CameraController cameraController = new CameraController(camera, shaderController, inputController, 5);
 		TextureController textureController = new TextureController("awesomeface.png", "cursor.png");
 		glDepthMask(false);
 		glDisable(GL_DEPTH_TEST);
@@ -45,8 +48,10 @@ public class Main {
 		bufferManager.bind();
 		
 		//Create object array. This will be handled by a controller later 
-		ArrayList<GameObject> objects = new ArrayList<GameObject>();
+		ArrayList<GameObject> objects = new ArrayList<GameObject>();		
 		
+		boolean wasPressed = false;
+		int frame = 0;
 		while(!window.shouldClose()) {
 			//Clear window for drawing
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -56,16 +61,41 @@ public class Main {
 				object.draw(shaderController, camera, objects);
 			}
 
-			if(inputController.isKeyDown(GLFW_KEY_SPACE)){
-				objects.add(new Square((float)inputController.getMouseX(),(float)inputController.getMouseY(),0,
+			if(inputController.isKeyDown(GLFW_KEY_SPACE) && !wasPressed){
+				Vector3f squarePosition = new Vector3f((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0);
+				Matrix4f cameraTransform = new Matrix4f();
+				camera.getView().get(cameraTransform);
+				cameraTransform.invert().transformPosition(squarePosition);
+				objects.add(new Square(squarePosition.x,squarePosition.y,squarePosition.z,
 					 0,0,0,100,100,"awesomeface.png", textureController));
 			}
 			
+			if(inputController.isKeyDown(GLFW_KEY_BACKSPACE)){
+				Vector3f worldCoord = new Vector3f((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0);
+				Matrix4f cameraTransform = new Matrix4f();
+				camera.getView().get(cameraTransform);
+				cameraTransform.invert().transformPosition(worldCoord);
+
+				GameObject toRemove = null;
+				for(GameObject object: objects){
+					if(worldCoord.x < object.getX() + object.getXScale() && worldCoord.x > object.getX() - object.getXScale()){
+						toRemove = object;
+					}	
+				}
+				if(toRemove != null){
+					objects.remove(toRemove);
+				}
+
+			}
 			//Perform necessary updates for next frame
-			
+			wasPressed = inputController.isKeyDown(GLFW_KEY_SPACE);
 			cameraController.update();
 			window.update();
-			System.gc();
+			if(frame % 600 == 0){
+				System.gc();
+			}
+			
+			frame += 1;
 		}
 		
 		window.destroy();

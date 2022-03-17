@@ -5,9 +5,10 @@ public class CameraController {
     private Camera camera;
     private ShaderController shaderController;
     private InputController inputController;
-
-    public CameraController(Camera camera, ShaderController shaderController, InputController inputController){
+    private float camSpeed;
+    public CameraController(Camera camera, ShaderController shaderController, InputController inputController, int camSpeed){
         this.camera = camera;
+        this.camSpeed = camSpeed;
         this.shaderController = shaderController;
         this.inputController = inputController;
     }
@@ -15,16 +16,16 @@ public class CameraController {
     public void update(){
         
         if(inputController.isKeyDown(GLFW_KEY_A)){
-            camera.move(-0.01f, 0, 0);
+            camera.move(-camSpeed, 0, 0);
         }
         if(inputController.isKeyDown(GLFW_KEY_D)){
-            camera.move(0.01f, 0, 0);
+            camera.move(camSpeed, 0, 0);
         }
         if(inputController.isKeyDown(GLFW_KEY_S)){
-            camera.move(0,-0.01f,0);
+            camera.move(0,-camSpeed,0);
         }
         if(inputController.isKeyDown(GLFW_KEY_W)){
-            camera.move(0,0.01f,0);
+            camera.move(0,camSpeed,0);
         }
         shaderController.setView(camera.getView());
     }
