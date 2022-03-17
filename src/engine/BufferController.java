@@ -35,7 +35,7 @@ public class BufferController {
 			this.indices.add(index + EBOvertexOffset);
 		}
 		
-		return new int[]{startIndex, numIndices};
+		return new int[]{startIndex, numIndices};    
 	}
 	
 	public void bind() {

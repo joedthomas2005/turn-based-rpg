@@ -8,6 +8,7 @@ import org.lwjgl.glfw.*;
 public class InputController {
 	
 	private Boolean[] keys = new Boolean[GLFW_KEY_LAST];
+	private Boolean[] firstPressed = new Boolean[GLFW_KEY_LAST];
 	private Boolean firstMouse = true;
 	private double lastX;
 	private double lastY;
@@ -18,7 +19,14 @@ public class InputController {
 	private float pitch;
 	private float yaw;
 	private float sensitivity;
-	
+	public void reset() {
+		for(int i = 0; i < GLFW_KEY_LAST; i++) {
+			if(firstPressed[i]) {
+				System.out.println("Key was pressed for the first time");
+			}
+			firstPressed[i] = false;
+		}
+	}
 	public InputController(Window window, float sensitivity) {
 		
 		this.sensitivity = sensitivity;
@@ -28,11 +36,13 @@ public class InputController {
 		this.lastY = window.getHeight() / 2;
 		for(int i = 0; i < GLFW_KEY_LAST; i++){
 			keys[i] = false;
+			firstPressed[i] = false;
 		}
 		//glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> 
 		{
 			keys[key] = action == GLFW_PRESS ? true : action == GLFW_RELEASE ? false : keys[key];
+			firstPressed[key] = action == GLFW_PRESS;
 		}));
 		
 	
@@ -132,6 +142,10 @@ public class InputController {
 	
 	public Boolean rightMouseDown() {
 		return rmbDown;
+	}
+	
+	public Boolean isKeyFirstPressed(int key) {
+		return firstPressed[key];
 	}
 	
 }
