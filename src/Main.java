@@ -17,7 +17,6 @@ import engine.InputController;
 
 import matrices.Vector;
 import matrices.exceptions.MathsException;
-import matrices.exceptions.VectorSizeMismatchException;
 import engine.Window;
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.ShaderException;
@@ -106,13 +105,16 @@ public class Main {
 		
 		
 		
-		Vector v1 = new Vector(1.0f, 0.0f,1.0f,2.0f);
+		Vector v1 = new Vector(1.0f, 0.0f,1.0f);
 		
 		Vector v2 = new Vector(5.0f,8.0f,-2.0f);
 		
 		Vector v3 = v1.add(v2);
 		
 		System.out.println(v3.toString());
+		System.out.println(v3.getLength());
+
+		
 	}
 	
 	private static void update(Window window, InputController inputController, CameraController cameraController, double deltaTime) {

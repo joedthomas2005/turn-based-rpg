@@ -88,6 +88,9 @@ public class ShaderController {
 		case "transform":
 			glUniformMatrix4fv(transformID, false, matrixBuffer);
 			break;
+		default:
+			System.err.println("Unknown Uniform Name.");
+		
 		}
 		matrixBuffer.clear();
 	}
