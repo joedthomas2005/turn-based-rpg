@@ -3,6 +3,7 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.stb.STBImage.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -13,9 +14,10 @@ import engine.CameraController;
 import engine.Cursor;
 import engine.GameObject;
 import engine.InputController;
-import engine.ShaderController;
-import engine.Square;
-import engine.TextureController;
+
+import matrices.Vector;
+import matrices.exceptions.MathsException;
+import matrices.exceptions.VectorSizeMismatchException;
 import engine.Window;
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.ShaderException;
@@ -24,8 +26,8 @@ import engine.exceptions.TextureException;
 
 public class Main {
 	
-	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException, CloneNotSupportedException {
-		
+	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException, MathsException {
+	/**	
 		//Enable GLFW
 		glfwInit();
 
@@ -100,7 +102,17 @@ public class Main {
 			lastTime = time;
 		}
 		
-		window.destroy();
+		window.destroy();**/
+		
+		
+		
+		Vector v1 = new Vector(1.0f, 0.0f,1.0f,2.0f);
+		
+		Vector v2 = new Vector(5.0f,8.0f,-2.0f);
+		
+		Vector v3 = v1.add(v2);
+		
+		System.out.println(v3.toString());
 	}
 	
 	private static void update(Window window, InputController inputController, CameraController cameraController, double deltaTime) {
