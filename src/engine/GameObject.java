@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL11.glGetError;
 import java.util.ArrayList;
 
 import org.joml.*;
-import org.joml.Math;
 
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;

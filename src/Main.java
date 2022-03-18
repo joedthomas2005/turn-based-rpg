@@ -1,11 +1,9 @@
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.stb.STBImage.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import engine.BufferController;
@@ -108,11 +106,11 @@ public class Main {
 			lastTime = time;
 		}
 		
-		window.destroy();
+		window.destroy(); 
 		
-	 	/**Matrix identity = Matrix.IdentityMatrix4x4();
+	 	Matrix identity = Matrix.IdentityMatrix4x4();
 		Vector vector = new Vector(1,2,3,4);
 		System.out.println(identity.transform(vector).toString());		
-		**/
+		
 	}
 }

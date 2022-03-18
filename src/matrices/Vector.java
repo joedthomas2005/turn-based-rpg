@@ -1,7 +1,5 @@
 package matrices;
 
-import java.util.ArrayList;
-
 import matrices.exceptions.VectorSizeMismatchException;
 
 public class Vector {

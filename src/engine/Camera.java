@@ -1,6 +1,5 @@
 package engine;
 import org.joml.*;
-import org.joml.Math;
 public class Camera {
 	
 	private final Matrix4f view = new Matrix4f();
