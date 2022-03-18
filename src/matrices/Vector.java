@@ -7,12 +7,6 @@ import matrices.exceptions.VectorSizeMismatchException;
 public class Vector {
 	public float[] data;
 	
-/**	public Vector(ArrayList<Float> data) {
-		for(float i : data) {
-			this.data.add(i);
-		}
-	}**/
-	
 	public Vector(float ...data) {
 		this.data = new float[data.length];
 
@@ -32,8 +26,7 @@ public class Vector {
 			
 			result[i] = data[i] + other.data[i];
 			
-		}
-		
+		}		
 		return new Vector(result);
 	}
 
@@ -67,20 +60,43 @@ public class Vector {
 	}
 
 
- 	public Vector dot(Vector other) throws VectorSizeMismatchException{
+ 	public float dot(Vector other) throws VectorSizeMismatchException{
 		
-		float[] result = new float[this.data.length];
+		float result = 0;
 
 		if(this.data.length != other.data.length) {
 			throw new VectorSizeMismatchException(this.data.length, other.data.length, "multiply");
 		}
 		
 		for(int i = 0; i < data.length; i++){
-			result[i] = data[i] * other.data[i];
+			result += data[i] * other.data[i];
 		}
 		
+		return result;
+	}
+
+	public double angleBetween(Vector other) throws VectorSizeMismatchException{
+		
+		float dotProduct = this.dot(other);
+		dotProduct /= this.getLength() * other.getLength();
+		return Math.acos(dotProduct);
+	}
+
+	public Vector cross(Vector other) throws VectorSizeMismatchException{
+		
+		if(this.data.length != 3 || other.data.length != 3){
+			throw new VectorSizeMismatchException(this.data.length, other.data.length, "cross multiply");
+		}
+
+		float [] result = new float[]{
+			this.data[1] * other.data[2] - this.data[2] * other.data[1],
+			this.data[2] * other.data[0] - this.data[0] * other.data[2],
+			this.data[0] * other.data[1] - this.data[1] * other.data[0]
+		};
+
 		return new Vector(result);
 	}
+	
 	
 	public double getLength() {
 
@@ -92,7 +108,6 @@ public class Vector {
 		return (Math.sqrt(valuesSquared));
 	}
 	
-	@Override
 	public String toString() {
 		String result = "(";
 		for(int i = 0; i < data.length; i++) {

@@ -14,7 +14,10 @@ import engine.CameraController;
 import engine.Cursor;
 import engine.GameObject;
 import engine.InputController;
-
+import engine.TextureController;
+import engine.ShaderController;
+import engine.Square;
+import matrices.Matrix;
 import matrices.Vector;
 import matrices.exceptions.MathsException;
 import engine.Window;
@@ -26,7 +29,7 @@ import engine.exceptions.TextureException;
 public class Main {
 	
 	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException, MathsException {
-	/**	
+		
 		//Enable GLFW
 		glfwInit();
 
@@ -97,23 +100,19 @@ public class Main {
 				}
 			}
 			
+			if(inputController.isKeyDown(GLFW_KEY_ESCAPE)){
+				glfwSetWindowShouldClose(window.getWindow(), true);
+			}
+
 			update(window, inputController, cameraController, deltaTime);
 			lastTime = time;
 		}
 		
-		window.destroy();**/
+		window.destroy();
 		
-		
-		
-		Vector v1 = new Vector(1.0f, 0.0f,1.0f);
-		
-		Vector v2 = new Vector(5.0f,8.0f,-2.0f);
-		
-		Vector v3 = v1.add(v2);
-		
-		System.out.println(v3.toString());
-		System.out.println(v3.getLength());
-
+	 	Matrix identity = Matrix.IdentityMatrix4x4();
+		Vector vector = new Vector(1,2,3,4);
+		System.out.println(identity.transform(vector).toString());		
 		
 	}
 	

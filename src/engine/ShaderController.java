@@ -57,6 +57,7 @@ public class ShaderController {
 		
 		
 		this.projection.identity().ortho2D(0, window.getWidth(), 0, window.getHeight());
+		
 		System.out.println(this.projection.toString());
 		glUseProgram(ID);
 		viewID = glGetUniformLocation(ID, "view");

@@ -15,7 +15,7 @@ public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix4f trans = new Matrix4f();
-	public abstract void draw(ShaderController controller, Camera camera, ArrayList<GameObject> objects) throws TextureBindException, DrawElementsException, CloneNotSupportedException;
+	public abstract void draw(ShaderController controller, Camera camera, ArrayList<GameObject> objects) throws TextureBindException, DrawElementsException;
 	protected String texturePath;
 	protected int textureID;
 	protected Boolean visible;

@@ -27,7 +27,7 @@ public class BufferController {
 		if(this.indices.size() > 0) {
 			EBOvertexOffset = Collections.max(this.indices);
 		}
-		System.out.println("Vertices offset by" + EBOvertexOffset);
+		System.out.println("Vertices offset by " + EBOvertexOffset);
 		for(float vertex : vertices) {
 			this.vertices.add(vertex);
 		}
@@ -41,6 +41,7 @@ public class BufferController {
 	public void bind() {
 		
 		try( MemoryStack stack = MemoryStack.stackPush()) {
+
 			IntBuffer vao = stack.mallocInt(1);
 			IntBuffer vbo = stack.mallocInt(1);
 			IntBuffer ebo = stack.mallocInt(1);
@@ -76,7 +77,7 @@ public class BufferController {
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(1, 2, GL_FLOAT, false, Float.BYTES * 5, Float.BYTES * 3);
 			glEnableVertexAttribArray(1);
-			//System.out.println("Vao character 0: " + vao.get(0));
+
 			System.out.println("Vao = " + vao.get(0));
 			glBindVertexArray(vao.get(0));
 		}
