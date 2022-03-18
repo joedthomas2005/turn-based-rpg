@@ -10,8 +10,8 @@ import java.util.Collections;
 
 public class BufferController {
 	
-	private ArrayList<Float> vertices;
-	private ArrayList<Integer> indices;
+	private final ArrayList<Float> vertices;
+	private final ArrayList<Integer> indices;
 
 	
 	public BufferController() {

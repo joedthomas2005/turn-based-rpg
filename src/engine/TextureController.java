@@ -17,7 +17,8 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL30.*;
 
 public class TextureController {
-	private Hashtable<String, Integer> textureNames = new Hashtable<String, Integer>();
+	
+	private final Hashtable<String, Integer> textureNames = new Hashtable<String, Integer>();
 	public TextureController(String... paths) throws TextureLoadException {
 
 		glEnable(GL_BLEND);

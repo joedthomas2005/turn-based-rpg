@@ -12,32 +12,29 @@ public class Window {
 	
 	private int vsync;
 	private long window;
-	private long monitor;
 	private int width;
 	private int height;
 	
-	private CharSequence title;
 	
 	public Window(int width, CharSequence title, int vsync, Boolean fullScreen) {
 		
-		this.title = title;
 		this.vsync = vsync;
 		
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1);
 			IntBuffer pHeight = stack.mallocInt(1);
 		
-			this.monitor = 0;
+			long monitor = 0;
 			this.window = 0;
 		
 			if(fullScreen) {
-				this.monitor = glfwGetPrimaryMonitor();
+				monitor = glfwGetPrimaryMonitor();
 			}
 		
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
-			this.window = glfwCreateWindow(width, width * 9/16, this.title, monitor, 0);
+			this.window = glfwCreateWindow(width, width * 9/16, title, monitor, 0);
 		
 			if(this.window == 0) {
 				System.err.println("GLFW FAILED LOADING WINDOW");
@@ -66,6 +63,11 @@ public class Window {
 		glClearColor(r,g,b,a);
 	}
 	
+	public void setVSync(int vsync){
+		this.vsync = vsync;
+		glfwSwapInterval(vsync);
+	}
+
 	public Boolean shouldClose() {
 		return glfwWindowShouldClose(this.window);
 	}

@@ -3,15 +3,12 @@ import org.joml.*;
 import org.joml.Math;
 public class Camera {
 	
-	private Matrix4f view = new Matrix4f();
-	private float pitch,yaw;
+	private final Matrix4f view = new Matrix4f();
 	private Vector3f position;
 	private Boolean moved = true;
 	
-	public Camera(float x, float y, float z, float pitch, float yaw){
+	public Camera(float x, float y, float z){
 		this.position = new Vector3f(-x,-y,z);
-		this.pitch = pitch;
-		this.yaw = yaw;
 		genViewMatrix();
 	}
 	
@@ -39,7 +36,7 @@ public class Camera {
 		this.moved = false;
 	}
 	
-	public void genViewMatrix() {
+	public final void genViewMatrix() {
 		
 		view.identity().translate(position);
 
@@ -67,15 +64,6 @@ public class Camera {
 		genViewMatrix();
 	}
 
-	
-	public float getPitch() {
-		return pitch;
-	}
-	
-	public float getYaw() {
-		return yaw;
-	}
-	
 	public Matrix4f getView() {
 		return view;
 	}

@@ -4,8 +4,8 @@ import org.joml.Vector3f;
 import engine.exceptions.TextureException;
 
 public class Cursor extends Square{
-	private InputController inputController;
-	private Camera camera;
+	private final InputController inputController;
+	private final Camera camera;
 	
 	public Cursor(TextureController textureController, InputController inputController, Camera camera) throws TextureException {
 		super(0,0,0,0,0,50,50,"cursor.png",textureController);

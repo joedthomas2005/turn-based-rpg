@@ -10,7 +10,7 @@ import matrices.exceptions.MatrixSizeMismatchException;
  * to just pass in the values for the matrix one by one. 
  */
 
-public class Matrix {
+public final class Matrix { //Final as constructor is private so I want an error to be thrown if I try and extend
 
     final int[] size;
     float[][] data;

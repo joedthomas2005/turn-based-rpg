@@ -14,13 +14,13 @@ import globals.PATHS;
 
 public class ShaderController {
 	
-	private int vShader;
-	private int fShader;
-	private int ID;
-	private Matrix4f projection = new Matrix4f();
-	private int viewID;
-	private int projectionID;
-	private int transformID;
+	private final int vShader;
+	private final int fShader;
+	private final int ID;
+	private final Matrix4f projection = new Matrix4f();
+	private final int viewID;
+	private final int projectionID;
+	private final int transformID;
 	
 	public ShaderController(String vertShaderPath, String fragShaderPath, Window window) throws ShaderException, IOException{
 		
@@ -91,6 +91,7 @@ public class ShaderController {
 			break;
 		default:
 			System.err.println("Unknown Uniform Name.");
+			break;
 		
 		}
 		matrixBuffer.clear();

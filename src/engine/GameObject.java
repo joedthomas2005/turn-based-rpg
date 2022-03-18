@@ -15,7 +15,6 @@ public abstract class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix4f trans = new Matrix4f();
-	public abstract void draw(ShaderController controller, Camera camera, ArrayList<GameObject> objects) throws TextureBindException, DrawElementsException;
 	protected String texturePath;
 	protected int textureID;
 	protected Boolean visible;
@@ -37,10 +36,10 @@ public abstract class GameObject {
 		genTransformMatrix();
 	}
 	
+	public abstract void draw(ShaderController controller, Camera camera, ArrayList<GameObject> objects) throws TextureBindException, DrawElementsException;
+
 	protected boolean checkVisible(Camera camera, ShaderController shader, ArrayList<GameObject> objects) {
-		
 		return true;
-		
 	}
 	
 	public int getTextureID() {
@@ -114,7 +113,7 @@ public abstract class GameObject {
 		this.genTransformMatrix();
 	}
 	
-	protected void genTransformMatrix() {
+	protected final void genTransformMatrix() {
 		this.trans.identity().translate(x,y,z).rotateXYZ(pitch,yaw,roll).scale(xScale,yScale,1);
 	}
 	

@@ -40,7 +40,7 @@ public class Main {
 
 		//Setup required components and controllers
 		BufferController bufferManager = new BufferController();
-		Camera camera = new Camera(0,0,0,0,0);
+		Camera camera = new Camera(0,0,0);
 		InputController inputController = new InputController(window, 1f);
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
 		CameraController cameraController = new CameraController(camera, shaderController, inputController, 10f);
@@ -110,10 +110,10 @@ public class Main {
 		
 		window.destroy();
 		
-	 	Matrix identity = Matrix.IdentityMatrix4x4();
+	 	/**Matrix identity = Matrix.IdentityMatrix4x4();
 		Vector vector = new Vector(1,2,3,4);
 		System.out.println(identity.transform(vector).toString());		
-		
+		**/
 	}
 	
 	private static void update(Window window, InputController inputController, CameraController cameraController, double deltaTime) {

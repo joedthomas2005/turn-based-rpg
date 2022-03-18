@@ -2,9 +2,9 @@ package engine;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class CameraController {
-    private Camera camera;
-    private ShaderController shaderController;
-    private InputController inputController;
+    private final Camera camera;
+    private final ShaderController shaderController;
+    private final InputController inputController;
     private float camSpeed;
     public CameraController(Camera camera, ShaderController shaderController, InputController inputController, float camSpeed){
         this.camera = camera;
@@ -34,6 +34,10 @@ public class CameraController {
         return camera;
     }
 
+    public void setCamSpeed(float camSpeed){
+        this.camSpeed = camSpeed;
+    }
+    
     public ShaderController getShaderController(){
         return shaderController;
     }
