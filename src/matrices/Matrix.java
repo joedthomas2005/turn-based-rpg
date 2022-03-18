@@ -71,7 +71,7 @@ public final class Matrix { //Final as constructor is private so I want an error
             throw new MatrixSizeMismatchException(this.size, new int[]{other.data.length, 1}, "multiply");
         }
 
-        float data[] = new float[other.data.length];
+        float[] data = new float[other.data.length];
         for(int row = 0; row < this.size[0]; row++){
             float value = 0;
             for(int column = 0; column < this.size[1]; column++){

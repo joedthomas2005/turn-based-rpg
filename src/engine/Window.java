@@ -16,7 +16,7 @@ public class Window {
 	private int height;
 	
 	
-	public Window(int width, CharSequence title, int vsync, Boolean fullScreen) {
+	public Window(int width, CharSequence title, int vsync, boolean fullScreen) {
 		
 		this.vsync = vsync;
 		
@@ -88,11 +88,11 @@ public class Window {
 		
 	}
 	
-	public float getWidth() {
+	public int getWidth() {
 		return width;
 	}
 	
-	public float getHeight() {
+	public int getHeight() {
 		return height;
 	}
 	
