@@ -38,7 +38,7 @@ public class InputController {
 		glfwSetKeyCallback(window.getWindow(), GLFWKeyCallback.create((event_window, key, scancode, action, mods) -> 
 		{
 			try {
-			keys[key] = action == GLFW_PRESS || !(action == GLFW_RELEASE);
+			keys[key] = action == GLFW_PRESS || action != GLFW_RELEASE;
 			firstPressed[key] = action == GLFW_PRESS;
 			}
 			
