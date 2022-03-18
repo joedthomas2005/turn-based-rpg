@@ -30,20 +30,8 @@ public class CameraController {
         shaderController.setView(camera.getView());
     }
 
-    public Camera getCamera(){
-        return camera;
-    }
-
     public void setCamSpeed(float camSpeed){
         this.camSpeed = camSpeed;
-    }
-    
-    public ShaderController getShaderController(){
-        return shaderController;
-    }
-
-    public InputController getInputController(){
-        return inputController;
     }
 
 }

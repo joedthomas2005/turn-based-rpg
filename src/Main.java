@@ -104,7 +104,7 @@ public class Main {
 				glfwSetWindowShouldClose(window.getWindow(), true);
 			}
 
-			update(window, inputController, cameraController, deltaTime);
+			GameLoop.update(window, inputController, cameraController, deltaTime);
 			lastTime = time;
 		}
 		
@@ -115,11 +115,14 @@ public class Main {
 		System.out.println(identity.transform(vector).toString());		
 		**/
 	}
-	
-	private static void update(Window window, InputController inputController, CameraController cameraController, double deltaTime) {
+
+}
+
+final class GameLoop{
+	private GameLoop(){};
+	public final static void update(Window window, InputController inputController, CameraController cameraController, double deltaTime){
 		cameraController.update((float)deltaTime);
 		inputController.reset();
 		window.update();
 	}
-
 }

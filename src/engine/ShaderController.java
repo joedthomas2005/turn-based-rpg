@@ -14,8 +14,6 @@ import globals.PATHS;
 
 public class ShaderController {
 	
-	private final int vShader;
-	private final int fShader;
 	private final int ID;
 	private final Matrix4f projection = new Matrix4f();
 	private final int viewID;
@@ -27,8 +25,8 @@ public class ShaderController {
 		String vertexShaderSource = Files.readString(Path.of(PATHS.ShaderDir + vertShaderPath));
 		String fragShaderSource = Files.readString(Path.of(PATHS.ShaderDir + fragShaderPath));
 		
-		vShader = glCreateShader(GL_VERTEX_SHADER);
-		fShader = glCreateShader(GL_FRAGMENT_SHADER);
+		int vShader = glCreateShader(GL_VERTEX_SHADER);
+		int fShader = glCreateShader(GL_FRAGMENT_SHADER);
 		
 		glShaderSource(vShader, vertexShaderSource);
 		glShaderSource(fShader, fragShaderSource);
@@ -65,6 +63,7 @@ public class ShaderController {
 		transformID = glGetUniformLocation(ID, "transform");
 	}
 	
+
 	public void setView(Matrix4f view) {
 		setMat4f("view", view);
 		setMat4f("projection", projection);
