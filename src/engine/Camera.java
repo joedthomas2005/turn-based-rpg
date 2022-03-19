@@ -18,8 +18,8 @@ public class Camera {
 	public Vector screenToWorld(Vector screenCoords) throws MatrixSizeMismatchException {
 
 		Matrix invertedView = Matrix.IdentityMatrix4x4().translate(position.negate().data[0], position.negate().data[1], position.negate().data[2]);
-        screenCoords = invertedView.transform(screenCoords);
-		return screenCoords;
+        worldCoords = invertedView.transform(screenCoords);
+		return worldCoords;
 	}
 	
 	public Vector screenToWorld(float x, float y) throws MatrixSizeMismatchException {
@@ -28,8 +28,6 @@ public class Camera {
 	
 	public Vector worldToScreen(Vector worldCoords) throws MatrixSizeMismatchException {
         Vector screenCoords = view.transform(worldCoords);
-        System.out.println("translating " + worldCoords.toString());
-        System.out.println("screenCoords = " + screenCoords.toString());
 		return screenCoords;
 	}
 	
