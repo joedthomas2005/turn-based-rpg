@@ -1,6 +1,8 @@
 package engine;
 import static org.lwjgl.glfw.GLFW.*;
 
+import matrices.exceptions.MatrixSizeMismatchException;
+
 public class CameraController {
     private final Camera camera;
     private final ShaderController shaderController;
@@ -13,7 +15,7 @@ public class CameraController {
         this.inputController = inputController;
     }
 
-    public void update(double deltaTime){
+    public void update(double deltaTime) throws MatrixSizeMismatchException{
         
         if(inputController.isKeyDown(GLFW_KEY_A)){
             camera.move(-camSpeed * deltaTime, 0, 0);

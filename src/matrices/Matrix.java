@@ -14,7 +14,7 @@ import matrices.exceptions.MatrixSizeMismatchException;
 public final class Matrix { //Final as constructor is private so I want an error to be thrown if I try and extend
 
     final int[] size;
-    float[][] data;
+    public float[][] data;
 
     private Matrix(float[][] data){
         this.data = data;
@@ -418,6 +418,14 @@ public final class Matrix { //Final as constructor is private so I want an error
         return TranslationMatrix(x,y,0);
     }
 
+    /**
+     * Construct a rotation matrix with a given pitch, yaw and roll angle
+     * @param pitch the angle to rotate in the pitch(x) axis
+     * @param yaw the angle to rotate in the yaw(y) axis
+     * @param roll the angle to rotate in the roll(z) axis
+     * @return a 4x4 transformation matrix
+     * @throws MatrixSizeMismatchException
+     */
     public static Matrix RotationMatrix(float pitch, float yaw, float roll) throws MatrixSizeMismatchException{
         
         Matrix pitchMatrix = IdentityMatrix4x4();
@@ -451,5 +459,15 @@ public final class Matrix { //Final as constructor is private so I want an error
         return pitchMatrix.multiply(yawMatrix).multiply(rollMatrix);
     }
     
+    public static Matrix OrthographicMatrix(float left, float right, float bottom, float top, float far, float near){
+        Matrix ortho = IdentityMatrix4x4();
+        ortho.data[0][0] = 2/(right - left);
+        ortho.data[1][1] = 2/(top - bottom);
+        ortho.data[2][2] = -2/(far - near);
+        ortho.data[0][3] = -((right + left)/(right - left));
+        ortho.data[1][3] = -((top + bottom)/(top - bottom));
+        ortho.data[2][3] = -((far + near)/(far - near));
+        return ortho;
+    }
     //#endregion
 }

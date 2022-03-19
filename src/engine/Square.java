@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
 import engine.exceptions.TextureException;
+import matrices.exceptions.MatrixSizeMismatchException;
 
 import static org.lwjgl.opengl.GL33.*;
 
@@ -15,7 +16,7 @@ public class Square extends GameObject{
 
 	private static ArrayList<Float> vertices = new ArrayList<Float>();
 	private static ArrayList<Integer> indices = new ArrayList<Integer>();	
-	public Square(float x, float y, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureException{
+	public Square(float x, float y, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureException, MatrixSizeMismatchException{
 		super(x,y,0,pitch,yaw,roll,xScale,yScale, texture, textureManager);
 				
 	}
