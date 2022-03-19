@@ -63,19 +63,30 @@ public final class Matrix { //Final as constructor is private so I want an error
 
     /**
      * Transforms (multiplies) a given vector by this matrix and returns the resultant vector.
+     * If the vector has less rows than the transform matrix (which usually has 4) it will be padded with 1s.
+     * These will not be removed in the resulting vector so you will have to remove them yourself.
      * @param the vector to transform
      * @return the resultant vector post transformation
      */
     public Vector transform(Vector other) throws MatrixSizeMismatchException{
-        if(other.data.length != this.size[0] || this.size[0] != this.size[1]){
+        if(this.size[0] != this.size[1]){
             throw new MatrixSizeMismatchException(this.size, new int[]{other.data.length, 1}, "multiply");
         }
 
-        float[] data = new float[other.data.length];
+        Vector toTransform = new Vector(new float[this.size[0]]);
+        for(int i = 0; i < other.data.length; i++){
+            toTransform.data[i] = other.data[i];
+        }
+
+        for(int i = other.data.length; i < this.size[0]; i++){
+            toTransform.data[i] = 1;
+        }
+
+        float[] data = new float[toTransform.data.length];
         for(int row = 0; row < this.size[0]; row++){
             float value = 0;
             for(int column = 0; column < this.size[1]; column++){
-                value += this.data[row][column] * other.data[column];
+                value += this.data[row][column] * toTransform.data[column];
             }
             data[row] = value;
         }
@@ -253,5 +264,100 @@ public final class Matrix { //Final as constructor is private so I want an error
             1, 0,
             0, 1);
     }
+
+    /**
+     * Create a scale matrix with a given x, y and z scale factor.
+     * This returns a matrix which can be applied to a vector with the .transform method.
+     * @param x the x scale factor
+     * @param y the y scale factor
+     * @param z the z scale factor
+     * @return a 4x4 transformation matrix
+     */
+    public static Matrix scale(float x, float y, float z){
+
+        Matrix scaleMatrix = IdentityMatrix4x4();
+        scaleMatrix.data[0][0] = x;
+        scaleMatrix.data[1][1] = y;
+        scaleMatrix.data[2][2] = z;
+        return scaleMatrix;
+    }
+
+    /**
+     * Create a scale matrix with a given x, y scale factor.
+     * This returns a matrix which can be applied to a vector with the .transform method.
+     * @param x the x scale factor
+     * @param y the y scale factor
+     * @param z the z scale factor
+     * @return a 4x4 transformation matrix
+     */
+    public static Matrix scale(float x, float y){
+
+        return scale(x,y,1);
+
+    }
+    
+    /**
+     * Create a translation matrix with a given x, y and z translation.
+     * This returns a matrix which can be applied to a vector with the .transform method.
+     * @param x the number of units to translate in the x axis
+     * @param y the number of units to translate in the y axis
+     * @param z the number of units to translate in the z axis
+     * @return a 4x4 transformation matrix
+     */
+    public static Matrix translate(float x, float y, float z){
+
+        Matrix translateMatrix = IdentityMatrix4x4();
+        translateMatrix.data[0][3] = x;
+        translateMatrix.data[1][3] = y;
+        translateMatrix.data[2][3] = z;
+        
+        return translateMatrix;
+    }
+
+    /**
+     * Construct a translation matrix with a given x and y translation.
+     * This returns a matrix which can be applied to a vector with the .transform method.
+     * @param x the number of units to translate in the x axis
+     * @param y the number of units to translate in the y axis
+     * @return a 4x4 transformation matrix
+     */
+    public static Matrix translate(float x, float y){
+        return translate(x,y,0);
+    }
+
+    public static Matrix rotate(float pitch, float yaw, float roll) throws MatrixSizeMismatchException{
+        
+        Matrix pitchMatrix = IdentityMatrix4x4();
+        Matrix yawMatrix = IdentityMatrix4x4();
+        Matrix rollMatrix = IdentityMatrix4x4();
+
+        float cosPitch = (float) Math.cos(Math.toRadians(pitch));
+        float sinPitch = (float) Math.sin(Math.toRadians(pitch));
+
+        pitchMatrix.data[1][1] = cosPitch;
+        pitchMatrix.data[1][2] = -sinPitch;
+        pitchMatrix.data[2][1] = sinPitch;
+        pitchMatrix.data[2][2] = cosPitch;
+
+        float cosYaw = (float) Math.cos(Math.toRadians(yaw));
+        float sinYaw = (float) Math.sin(Math.toRadians(yaw));
+
+        yawMatrix.data[0][0] = cosYaw;
+        yawMatrix.data[0][2] = sinYaw;
+        yawMatrix.data[2][0] = -sinYaw;
+        yawMatrix.data[2][2] = cosYaw;
+
+        float cosRoll = (float) Math.cos(Math.toRadians(roll));
+        float sinRoll = (float) Math.sin(Math.toRadians(roll));
+
+        rollMatrix.data[0][0] = cosRoll;
+        rollMatrix.data[0][1] = -sinRoll;
+        rollMatrix.data[1][0] = sinRoll;
+        rollMatrix.data[1][1] = cosRoll;
+
+        Matrix rotationMatrix = pitchMatrix.multiply(yawMatrix).multiply(rollMatrix);
+        return rotationMatrix;
+    }
+    
     //#endregion
 }

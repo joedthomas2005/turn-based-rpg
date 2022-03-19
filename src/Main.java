@@ -28,7 +28,8 @@ public class Main {
 	
 	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException, MathsException {
 		
-		//Enable GLFW
+		/**
+		 * //Enable GLFW
 		glfwInit();
 
 		//Create window and context
@@ -106,11 +107,12 @@ public class Main {
 			lastTime = time;
 		}
 		
-		window.destroy(); 
+		window.destroy(); **/
 		
-	 	Matrix identity = Matrix.IdentityMatrix4x4();
-		Vector vector = new Vector(1,2,3,4);
-		System.out.println(identity.transform(vector).toString());		
-		
+	 	Matrix transform = Matrix.rotate(0, 0, -90);
+		Vector vector = new Vector(1,1,0);
+		vector = transform.transform(vector);
+		System.out.println(vector.toString());
+
 	}
 }
