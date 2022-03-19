@@ -27,8 +27,7 @@ public class Camera {
 	}
 	
 	public Vector worldToScreen(Vector worldCoords) throws MatrixSizeMismatchException {
-        Vector screenCoords = view.transform(worldCoords);
-		return screenCoords;
+		return view.transform(worldCoords);
 	}
 	
 	public Vector worldToScreen(float x, float y) throws MatrixSizeMismatchException {
