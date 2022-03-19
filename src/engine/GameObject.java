@@ -1,10 +1,7 @@
 package engine;
 
 import static org.lwjgl.opengl.GL11.glGetError;
-
 import java.util.ArrayList;
-
-import org.joml.*;
 
 import engine.exceptions.DrawElementsException;
 import engine.exceptions.TextureBindException;
@@ -114,9 +111,7 @@ public abstract class GameObject {
 	}
 	
 	protected final void genTransformMatrix() throws MatrixSizeMismatchException {
-        System.out.println("Generating transformation matrix.");
 		this.trans = Matrix.IdentityMatrix4x4().translate(x,y,z).rotate(pitch,yaw,roll).scale(xScale,yScale);
-	    System.out.println(trans.toString());
     }
 	
 	public float getX() {

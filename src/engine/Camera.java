@@ -3,6 +3,7 @@ package engine;
 import matrices.Matrix;
 import matrices.Vector;
 import matrices.exceptions.MatrixSizeMismatchException;
+
 public class Camera {
 	
 	private Matrix view = Matrix.IdentityMatrix4x4();

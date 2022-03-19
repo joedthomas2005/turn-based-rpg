@@ -4,25 +4,11 @@ import static org.lwjgl.opengl.GL33.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.joml.Vector3f;
+import engine.*;
+import engine.exceptions.*;
 
-import engine.BufferController;
-import engine.Camera;
-import engine.CameraController;
-import engine.Cursor;
-import engine.GameObject;
-import engine.InputController;
-import engine.TextureController;
-import engine.ShaderController;
-import engine.Square;
-import matrices.Matrix;
-import matrices.Vector;
-import matrices.exceptions.MathsException;
-import engine.Window;
-import engine.exceptions.DrawElementsException;
-import engine.exceptions.ShaderException;
-import engine.exceptions.TextureException;
-
+import matrices.*;
+import matrices.exceptions.*;
 
 public class Main {
 	
@@ -58,7 +44,7 @@ public class Main {
 		double time = glfwGetTime();
 		double lastTime = glfwGetTime();
 		double deltaTime = 0;
-		
+        objects.add(new Square(0,0,0,0,0,1,1,"placeholder.png",textureController));
 		
 		while(!window.shouldClose()) {
 			

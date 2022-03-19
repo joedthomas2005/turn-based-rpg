@@ -6,7 +6,6 @@ import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import engine.exceptions.*;
@@ -53,7 +52,7 @@ public class ShaderController {
 		
 		glDeleteShader(vShader);
 		glDeleteShader(fShader);
-		this.projection = Matrix.OrthographicMatrix(0, window.getWidth(), 0, window.getHeight(), 100, -100);
+		this.projection = Matrix.OrthographicMatrix(0, window.getWidth(), 0, window.getHeight(), 1, -1);
 		System.out.println(this.projection.toString());
 		glUseProgram(ID);
 		viewID = glGetUniformLocation(ID, "view");
@@ -72,24 +71,24 @@ public class ShaderController {
 	}
 
 	public void setMat4f(String name, Matrix matrix) {
-		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16); 
 
+        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16); 
 		for(float[] row : matrix.data){
 			for(float column: row){
                 matrixBuffer.put(column);
             }
 		}
-    
+        matrixBuffer.rewind();
 		switch(name) {
 			
 		case "view":
-			glUniformMatrix4fv(viewID, false, matrixBuffer);
+	        glUniformMatrix4fv(viewID, true, matrixBuffer);
 			break;
 		case "projection":
-			glUniformMatrix4fv(projectionID, false, matrixBuffer);
+			glUniformMatrix4fv(projectionID, true, matrixBuffer);
 			break;
 		case "transform":
-			glUniformMatrix4fv(transformID, false, matrixBuffer);
+			glUniformMatrix4fv(transformID, true, matrixBuffer);
 			break;
 		default:
 			System.err.println("Unknown Uniform Name.");

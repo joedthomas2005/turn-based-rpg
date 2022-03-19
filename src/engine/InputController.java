@@ -1,6 +1,4 @@
 package engine;
-//import static com.sun.jna.platform.win32.WinUser.*;
-//import static com.sun.jna.platform.win32.User32.INSTANCE;
 
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.*;

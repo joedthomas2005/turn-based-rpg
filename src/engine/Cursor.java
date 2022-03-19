@@ -1,5 +1,4 @@
 package engine;
-import org.joml.Vector3f;
 
 import engine.exceptions.TextureException;
 import matrices.Vector;
@@ -19,7 +18,6 @@ public class Cursor extends Square{
 		
 		Vector worldCoord = camera.screenToWorld(new Vector((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0));
 		
-        System.out.println("cursor drawn at: " + worldCoord.toString());
 		setX(worldCoord.data[0]);
 		setY(worldCoord.data[1]);
 		
