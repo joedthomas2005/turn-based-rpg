@@ -47,7 +47,7 @@ public final class Matrix { //Final as constructor is private so I want an error
      * @return a matrix with 1 less row and column than this one
      * @throws CoFactorNonSquareException
      */
-    public Matrix coFactor(int row, int column) throws CoFactorNonSquareException{
+    public Matrix minor(int row, int column) throws CoFactorNonSquareException{
         
         if(this.size[0] != this.size[1]){
             throw new CoFactorNonSquareException(size);
@@ -159,6 +159,64 @@ public final class Matrix { //Final as constructor is private so I want an error
         
     }
 
+    /**
+     * Constructs a rotation matrix, multiplies this matrix by it and returns the result.
+     * @param pitch the angle to rotate on the x axis
+     * @param yaw the angle to rotate on the y axis
+     * @param roll the angle to rotate on the z axis (use this for 2D rotation)
+     * @return a new matrix rotated by the given angles
+     */
+    public Matrix rotate(float pitch, float yaw, float roll) throws MatrixSizeMismatchException{
+        Matrix rotationMatrix = RotationMatrix(pitch, yaw, roll);
+        return this.multiply(rotationMatrix);
+    }
+
+    /**
+     * Constructs a translation matrix, multiplies this matrix by it and returns the result.
+     * @param x the amount to translate in the x axis
+     * @param y the amount to translate in the y axis
+     * @param z the amount to translate in the z axis
+     * @return a new matrix translated by the given values
+     */
+    public Matrix translate(float x, float y, float z) throws MatrixSizeMismatchException{
+        Matrix translationMatrix = TranslationMatrix(x, y, z);
+        return this.multiply(translationMatrix);
+    }
+
+    /**
+     * Constructs a translation matrix, multiplies this matrix by it and returns the result.
+     * @param x the amount to translate in the x axis
+     * @param y the amount to translate in the y axis
+     * @return a new matrix translated by the given values (0 in the z axis)
+     */
+    public Matrix translate(float x, float y) throws MatrixSizeMismatchException{
+        Matrix translationMatrix = TranslationMatrix(x, y);
+        return this.multiply(translationMatrix);
+    }
+
+    /**
+     * Constructs a scale matrix, multiplies this matrix by it and returns the result.
+     * @param x the amount to scale in the x axis
+     * @param y the amount to scale in the y axis
+     * @param z the amount to scale in the z axis
+     * @return a new matrix scaled by the given values
+     */
+    public Matrix scale(float x, float y, float z) throws MatrixSizeMismatchException{
+        Matrix scaleMatrix = ScaleMatrix(x, y, z);
+        return this.multiply(scaleMatrix);
+    }
+
+    /**
+     * Constructs a scale matrix, multiplies this matrix by it and returns the result.
+     * @param x the amount to scale in the x axis
+     * @param y the amount to scale in the y axis
+     * @return a new matrix scaled by the given values (1 in the z axis)
+     */
+    public Matrix scale(float x, float y) throws MatrixSizeMismatchException{
+        Matrix scaleMatrix = ScaleMatrix(x, y);
+        return this.multiply(scaleMatrix);
+    }
+    
     //#region Factory methods
 
     /**
@@ -308,7 +366,7 @@ public final class Matrix { //Final as constructor is private so I want an error
      * @param z the z scale factor
      * @return a 4x4 transformation matrix
      */
-    public static Matrix scale(float x, float y, float z){
+    public static Matrix ScaleMatrix(float x, float y, float z){
 
         Matrix scaleMatrix = IdentityMatrix4x4();
         scaleMatrix.data[0][0] = x;
@@ -325,9 +383,9 @@ public final class Matrix { //Final as constructor is private so I want an error
      * @param z the z scale factor
      * @return a 4x4 transformation matrix
      */
-    public static Matrix scale(float x, float y){
+    public static Matrix ScaleMatrix(float x, float y){
 
-        return scale(x,y,1);
+        return ScaleMatrix(x,y,1);
 
     }
     
@@ -339,7 +397,7 @@ public final class Matrix { //Final as constructor is private so I want an error
      * @param z the number of units to translate in the z axis
      * @return a 4x4 transformation matrix
      */
-    public static Matrix translate(float x, float y, float z){
+    public static Matrix TranslationMatrix(float x, float y, float z){
 
         Matrix translateMatrix = IdentityMatrix4x4();
         translateMatrix.data[0][3] = x;
@@ -356,11 +414,11 @@ public final class Matrix { //Final as constructor is private so I want an error
      * @param y the number of units to translate in the y axis
      * @return a 4x4 transformation matrix
      */
-    public static Matrix translate(float x, float y){
-        return translate(x,y,0);
+    public static Matrix TranslationMatrix(float x, float y){
+        return TranslationMatrix(x,y,0);
     }
 
-    public static Matrix rotate(float pitch, float yaw, float roll) throws MatrixSizeMismatchException{
+    public static Matrix RotationMatrix(float pitch, float yaw, float roll) throws MatrixSizeMismatchException{
         
         Matrix pitchMatrix = IdentityMatrix4x4();
         Matrix yawMatrix = IdentityMatrix4x4();
@@ -390,8 +448,7 @@ public final class Matrix { //Final as constructor is private so I want an error
         rollMatrix.data[1][0] = sinRoll;
         rollMatrix.data[1][1] = cosRoll;
 
-        Matrix rotationMatrix = pitchMatrix.multiply(yawMatrix).multiply(rollMatrix);
-        return rotationMatrix;
+        return pitchMatrix.multiply(yawMatrix).multiply(rollMatrix);
     }
     
     //#endregion

@@ -110,7 +110,7 @@ public class Main {
 		window.destroy(); **/
 		
 	 	Matrix identity = Matrix.IdentityMatrix4x4();
-		Matrix identity3x3 = identity.coFactor(0, 2);
+		Matrix identity3x3 = identity.minor(0, 2).rotate(0,0,45);
 		System.out.println(identity3x3.toString());
 
 	}
