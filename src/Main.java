@@ -109,10 +109,9 @@ public class Main {
 		
 		window.destroy(); **/
 		
-	 	Matrix transform = Matrix.rotate(0, 0, -90);
-		Vector vector = new Vector(1,1,0);
-		vector = transform.transform(vector);
-		System.out.println(vector.toString());
+	 	Matrix identity = Matrix.IdentityMatrix4x4();
+		Matrix identity3x3 = identity.coFactor(0, 2);
+		System.out.println(identity3x3.toString());
 
 	}
 }

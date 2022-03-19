@@ -1,4 +1,5 @@
 package matrices;
+import matrices.exceptions.CoFactorNonSquareException;
 import matrices.exceptions.MatrixSizeMismatchException;
 
 /**
@@ -36,6 +37,40 @@ public final class Matrix { //Final as constructor is private so I want an error
         }
 
         return string;
+    }
+
+    /**
+     * Calculate the cofactor of this matrix for a given element.
+     * This results in a cofactor matrix with the row and column of that element removed.
+     * @param row the row index of the element
+     * @param column the column index of the element
+     * @return a matrix with 1 less row and column than this one
+     * @throws CoFactorNonSquareException
+     */
+    public Matrix coFactor(int row, int column) throws CoFactorNonSquareException{
+        
+        if(this.size[0] != this.size[1]){
+            throw new CoFactorNonSquareException(size);
+        }
+        
+        int curRow = 0; 
+        int curColumn = 0;
+
+        float[][] data = new float[this.size[0]-1][this.size[0]-1];
+        for(int r = 0; r < this.size[0]; r++){
+            for(int c = 0; c < this.size[0]; c++){
+
+                if(r != row && c != column){
+                    data[curRow][curColumn++] = this.data[r][c];
+                    
+                    if(curColumn == this.size[0] - 1){
+                        curColumn = 0;
+                        curRow++;
+                    }
+                }
+            }
+        }
+        return new Matrix(data);
     }
 
     /**
