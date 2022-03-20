@@ -21,8 +21,7 @@ public class Camera extends GameObject{
 	public Vector screenToWorld(Vector screenCoords) throws MatrixSizeMismatchException {
 
 		Matrix invertedView = Matrix.IdentityMatrix4x4().translate(-x, -y, -z);
-        Vector worldCoords = invertedView.transform(screenCoords);
-		return worldCoords;
+        return invertedView.transform(screenCoords);
 	}
 	
 	public Vector screenToWorld(float x, float y) throws MatrixSizeMismatchException {
@@ -39,10 +38,6 @@ public class Camera extends GameObject{
 	
 	public void update() {
 		this.moved = false;
-	}
-
-	public Matrix getView() {
-		return trans;
 	}
 
 	public Boolean getMoved() {

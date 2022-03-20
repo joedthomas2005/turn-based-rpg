@@ -30,7 +30,7 @@ public class CameraController {
         if(inputController.isKeyDown(GLFW_KEY_W)){
             camera.move(0,(float) (camSpeed * deltaTime),0);
         }
-        shaderController.setView(camera.getView());
+        shaderController.setView(camera.getTransformMatrix());
     }
 
     public void setCamSpeed(float camSpeed){

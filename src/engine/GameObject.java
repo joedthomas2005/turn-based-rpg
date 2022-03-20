@@ -6,7 +6,7 @@ import engine.exceptions.TextureLoadException;
 import matrices.Matrix;
 import matrices.exceptions.MatrixSizeMismatchException;
 
-public abstract class GameObject {
+public class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix trans = Matrix.IdentityMatrix4x4();
@@ -111,5 +111,9 @@ public abstract class GameObject {
 	}
 	public float getYScale(){
 		return yScale;
+	}
+
+	public Matrix getTransformMatrix(){
+		return trans;
 	}
 }
