@@ -20,7 +20,7 @@ public class Main {
 
         System.out.println("glfw initialised. creating window");
 		//Create window and context
-		Window window = new Window(1920, "Turn Based RPG", 1, false);
+		Window window = new Window(1366, "Turn Based RPG", 1, true);
 		System.out.println("window created");
         window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
@@ -38,14 +38,14 @@ public class Main {
 		bufferManager.bind();
 
 		//Create object array. This will be handled by a controller later 
-		ArrayList<GameObject> objects = new ArrayList<GameObject>();		
+		ArrayList<DrawableGameObject> drawable = new ArrayList<DrawableGameObject>();
+		
 		Cursor cursor = new Cursor(textureController, inputController, camera);
 		
 		double time = glfwGetTime();
 		double lastTime = glfwGetTime();
 		double deltaTime = 0;
-        objects.add(new Square(0,0,0,0,0,1,1,"placeholder.png",textureController));
-		
+
 		while(!window.shouldClose()) {
 			
 			time = glfwGetTime();
@@ -56,16 +56,16 @@ public class Main {
 			//Draw loop
 			cursor.update();
 			
-			for(GameObject object : objects){
-				object.draw(shaderController, camera, objects);
+			for(Drawable object : drawable){
+				object.draw(shaderController, camera);
 			}
-			cursor.draw(shaderController, camera, objects);
+			cursor.draw(shaderController, camera);
 			
 			if(inputController.leftMouseClicked()){
 				
 				Vector squarePosition = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
 			    System.out.println("creating square at "+squarePosition.data[0]+","+squarePosition.data[1]);	
-				objects.add(new Square(squarePosition.data[0],squarePosition.data[1],
+				drawable.add(new Square(squarePosition.data[0],squarePosition.data[1],
 					 0,0,0,100,100,"placeholder.png", textureController));
 			}
 			
@@ -74,7 +74,7 @@ public class Main {
 				Vector worldCoord = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
 
 				GameObject toRemove = null;
-				for(GameObject object: objects){
+				for(GameObject object: drawable){
 					
 					if(worldCoord.data[0] < object.getX() + object.getXScale() && worldCoord.data[0] > object.getX() - object.getXScale() &&
 							worldCoord.data[1] < object.getY() + object.getYScale() && worldCoord.data[1] > object.getY() - object.getYScale()){
@@ -83,7 +83,7 @@ public class Main {
 				}
 				
 				if(toRemove != null){
-					objects.remove(toRemove);
+					drawable.remove(toRemove);
 				}
 			}
 			

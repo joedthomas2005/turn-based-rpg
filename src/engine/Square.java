@@ -9,7 +9,7 @@ import matrices.exceptions.MatrixSizeMismatchException;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class Square extends GameObject{
+public class Square extends DrawableGameObject{
 	
 	private static int startIndex;
 	private static int numIndices;
@@ -17,33 +17,26 @@ public class Square extends GameObject{
 	private static ArrayList<Float> vertices = new ArrayList<Float>();
 	private static ArrayList<Integer> indices = new ArrayList<Integer>();	
 	public Square(float x, float y, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureException, MatrixSizeMismatchException{
-		super(x,y,0,pitch,yaw,roll,xScale,yScale, texture, textureManager);
+		super(x,y,0,pitch,yaw,roll,xScale,yScale, textureManager, texture);
 				
 	}
 		
-	public void draw(ShaderController controller, Camera camera, ArrayList<GameObject> otherObjects) throws TextureBindException, DrawElementsException {
-
-		if(camera.getMoved()) {
-			this.visible = this.checkVisible(camera, controller ,otherObjects);
+	public void draw(ShaderController controller, Camera camera){
+		
+		glBindTexture(GL_TEXTURE_2D, this.textureID);
+		int err = glGetError();
+		if(err != 0) {
+			throw new TextureBindException(this.texturePath, this.textureID);
 		}
 		
-		if(visible) {
+		controller.setMat4f("transform", this.trans);
 		
-		
-			glBindTexture(GL_TEXTURE_2D, this.textureID);
-			int err = glGetError();
-			if(err != 0) {
-				throw new TextureBindException(this);
-			}
-		
-			controller.setMat4f("transform", this.trans);
-		
-			glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, startIndex * Integer.BYTES);
-			err = glGetError();
-			if(err != 0) {
-				throw new DrawElementsException(this, err);
-			}
+		glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, startIndex * Integer.BYTES);
+		err = glGetError();
+		if(err != 0) {
+			throw new DrawElementsException(this, err);
 		}
+		
 	}
 	
 	public static void initialise(BufferController buffers) {

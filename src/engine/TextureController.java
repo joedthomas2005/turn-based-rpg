@@ -11,6 +11,12 @@ import static org.lwjgl.stb.STBImage.stbi_load;
 import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 import static org.lwjgl.opengl.GL30.*;
 
+/**
+ * The TextureController class contains a hashtable of all the loaded texture names and their 
+ * internal GL handles. Pass all texture names to be used into the constructor (just the filename,
+ * paths are defined in globals/PATHS.java) and they will be loaded 
+ * and their ids stored in the hashtable.
+ */
 public class TextureController {
 	
 	private final Hashtable<String, Integer> textureNames = new Hashtable<String, Integer>();
@@ -49,7 +55,12 @@ public class TextureController {
 			}
 		}
 	}
-	
+
+	/**
+	 * Return the handle/ID of this texture. Use the same filename you passed to the constructor.
+	 * @param path the filename of the texture (not the full path)
+	 * @return the int ID of the given texure name
+	 */
 	public int getTexture(String path) {
 		return textureNames.get(path);
 	}
