@@ -4,37 +4,25 @@ import static org.lwjgl.opengl.GL33.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.joml.Vector3f;
+import engine.*;
+import engine.exceptions.*;
 
-import engine.BufferController;
-import engine.Camera;
-import engine.CameraController;
-import engine.Cursor;
-import engine.GameObject;
-import engine.InputController;
-import engine.TextureController;
-import engine.ShaderController;
-import engine.Square;
-import matrices.Matrix;
-import matrices.Vector;
-import matrices.exceptions.MathsException;
-import engine.Window;
-import engine.exceptions.DrawElementsException;
-import engine.exceptions.ShaderException;
-import engine.exceptions.TextureException;
-
+import matrices.*;
+import matrices.exceptions.*;
 
 public class Main {
 	
-	public static void main(String[] args) throws ShaderException, TextureException, IOException, DrawElementsException, MathsException {
+	public static void main(String[] args) throws MathsException, TextureException, DrawElementsException, ShaderException, IOException {
 		
-		/**
-		 * //Enable GLFW
+        System.out.println("Starting program");		
+		//Enable GLFW
 		glfwInit();
 
+        System.out.println("glfw initialised. creating window");
 		//Create window and context
-		Window window = new Window(1920, "Turn Based RPG", 1, true);
-		window.setColor(1, 1, 1, 1);
+		Window window = new Window(1920, "Turn Based RPG", 1, false);
+		System.out.println("window created");
+        window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 
 		//Setup required components and controllers
@@ -56,7 +44,7 @@ public class Main {
 		double time = glfwGetTime();
 		double lastTime = glfwGetTime();
 		double deltaTime = 0;
-		
+        objects.add(new Square(0,0,0,0,0,1,1,"placeholder.png",textureController));
 		
 		while(!window.shouldClose()) {
 			
@@ -75,21 +63,21 @@ public class Main {
 			
 			if(inputController.leftMouseClicked()){
 				
-				Vector3f squarePosition = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
-				
-				objects.add(new Square(squarePosition.x,squarePosition.y,
+				Vector squarePosition = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
+			    System.out.println("creating square at "+squarePosition.data[0]+","+squarePosition.data[1]);	
+				objects.add(new Square(squarePosition.data[0],squarePosition.data[1],
 					 0,0,0,100,100,"placeholder.png", textureController));
 			}
 			
 			if(inputController.rightMouseClicked()){
 				
-				Vector3f worldCoord = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
+				Vector worldCoord = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
 
 				GameObject toRemove = null;
 				for(GameObject object: objects){
 					
-					if(worldCoord.x < object.getX() + object.getXScale() && worldCoord.x > object.getX() - object.getXScale() &&
-							worldCoord.y < object.getY() + object.getYScale() && worldCoord.y > object.getY() - object.getYScale()){
+					if(worldCoord.data[0] < object.getX() + object.getXScale() && worldCoord.data[0] > object.getX() - object.getXScale() &&
+							worldCoord.data[1] < object.getY() + object.getYScale() && worldCoord.data[1] > object.getY() - object.getYScale()){
 						toRemove = object;
 					}	
 				}
@@ -107,11 +95,7 @@ public class Main {
 			lastTime = time;
 		}
 		
-		window.destroy(); **/
-		
-	 	Matrix identity = Matrix.IdentityMatrix4x4();
-		Matrix identity3x3 = identity.minor(0, 2).rotate(0,0,45);
-		System.out.println(identity3x3.toString());
+		window.destroy();
 
 	}
 }

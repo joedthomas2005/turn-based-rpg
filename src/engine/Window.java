@@ -34,8 +34,9 @@ public class Window {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
-			this.window = glfwCreateWindow(width, width * 9/16, title, monitor, 0);
-		
+			System.out.println("create window now");
+            this.window = glfwCreateWindow(500, 500, title, monitor, 0);
+	        System.out.println("window created");	
 			if(this.window == 0) {
 				System.err.println("GLFW FAILED LOADING WINDOW");
 			}

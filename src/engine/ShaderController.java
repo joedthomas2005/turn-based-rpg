@@ -6,16 +6,16 @@ import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import engine.exceptions.*;
 import globals.PATHS;
+import matrices.Matrix;
 
 public class ShaderController {
 	
 	private final int ID;
-	private final Matrix4f projection = new Matrix4f();
+	private final Matrix projection;
 	private final int viewID;
 	private final int projectionID;
 	private final int transformID;
@@ -52,10 +52,7 @@ public class ShaderController {
 		
 		glDeleteShader(vShader);
 		glDeleteShader(fShader);
-		
-		
-		this.projection.identity().ortho2D(0, window.getWidth(), 0, window.getHeight());
-		
+		this.projection = Matrix.OrthographicMatrix(0, window.getWidth(), 0, window.getHeight(), 1, -1);
 		System.out.println(this.projection.toString());
 		glUseProgram(ID);
 		viewID = glGetUniformLocation(ID, "view");
@@ -64,7 +61,7 @@ public class ShaderController {
 	}
 	
 
-	public void setView(Matrix4f view) {
+	public void setView(Matrix view) {
 		setMat4f("view", view);
 		setMat4f("projection", projection);
 	}
@@ -73,20 +70,25 @@ public class ShaderController {
 		glUniform3f(glGetUniformLocation(ID, name), x, y, z);
 	}
 
-	public void setMat4f(String name, Matrix4f matrix) {
-		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-		matrix.get(matrixBuffer);
-		
+	public void setMat4f(String name, Matrix matrix) {
+
+        FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16); 
+		for(float[] row : matrix.data){
+			for(float column: row){
+                matrixBuffer.put(column);
+            }
+		}
+        matrixBuffer.rewind();
 		switch(name) {
 			
 		case "view":
-			glUniformMatrix4fv(viewID, false, matrixBuffer);
+	        glUniformMatrix4fv(viewID, true, matrixBuffer);
 			break;
 		case "projection":
-			glUniformMatrix4fv(projectionID, false, matrixBuffer);
+			glUniformMatrix4fv(projectionID, true, matrixBuffer);
 			break;
 		case "transform":
-			glUniformMatrix4fv(transformID, false, matrixBuffer);
+			glUniformMatrix4fv(transformID, true, matrixBuffer);
 			break;
 		default:
 			System.err.println("Unknown Uniform Name.");
@@ -96,7 +98,7 @@ public class ShaderController {
 		matrixBuffer.clear();
 	}
 	
-	public Matrix4f getProjection(){
+	public Matrix getProjection(){
 		return this.projection;
 	}
 	
