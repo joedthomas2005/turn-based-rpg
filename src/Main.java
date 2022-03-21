@@ -34,7 +34,7 @@ public class Main {
 		TextureController textureController = new TextureController("cursor.png", "placeholder.png");
 		
 		ArrayList<DrawableCreator> factories = new ArrayList<DrawableCreator>();
-		SquareFactory squareFactory = new SquareFactory(textureController);
+		DrawableCreator squareFactory = Creators.squareCreator(textureController);
 		factories.add(squareFactory);
 		
 		//Initialise any shapes that will be used and finally bind the VAO

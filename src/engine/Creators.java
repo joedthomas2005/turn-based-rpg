@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public final class Creators {
 
-    public Creators(TextureController textures){
-
+    private Creators(){
     };
+    
     public static DrawableCreator squareCreator(TextureController textures){
 
         return new DrawableCreator() {

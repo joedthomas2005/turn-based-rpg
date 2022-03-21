@@ -8,8 +8,8 @@ public class Cursor{
 	private final Camera camera;
 	public final DrawableGameObject cursor;
 
-	public Cursor(SquareFactory squareFactory, InputController input, Camera camera){
-		this.cursor = squareFactory.create(0,0,0,50,50,"cursor.png");
+	public Cursor(DrawableCreator squareCreator, InputController input, Camera camera){
+		this.cursor = squareCreator.create(0,0,0,50,50,"cursor.png");
 		this.inputController = input;
 		this.camera = camera;
 	}
@@ -17,8 +17,7 @@ public class Cursor{
 	public void update(){
 		
 		Vector worldCoord = camera.screenToWorld(new Vector((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0));
-		
-		System.out.println("Moving cursor to " + worldCoord.data[0] + "," + worldCoord.data[1]);
+
 		cursor.setX(worldCoord.data[0]);
 		cursor.setY(worldCoord.data[1]);
 		
