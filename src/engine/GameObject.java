@@ -10,8 +10,6 @@ public class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix trans = Matrix.IdentityMatrix4x4();
-	protected String texturePath;
-	protected int textureID;
 	protected Boolean visible;
 	
 	protected GameObject(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale) throws TextureLoadException, MatrixSizeMismatchException {

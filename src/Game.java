@@ -98,8 +98,8 @@ public final class Game implements Runnable{
 				
 			Vector worldCoord = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
 
-			GameObject toRemove = null;
-			for(GameObject object: drawable){
+			DrawableGameObject toRemove = null;
+			for(DrawableGameObject object: drawable){
 					
 				if(worldCoord.data[0] < object.getX() + object.getXScale() && worldCoord.data[0] > object.getX() - object.getXScale() &&
 						worldCoord.data[1] < object.getY() + object.getYScale() && worldCoord.data[1] > object.getY() - object.getYScale()){
