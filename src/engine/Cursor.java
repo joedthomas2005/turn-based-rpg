@@ -1,25 +1,25 @@
 package engine;
 
-import engine.exceptions.TextureException;
 import matrices.Vector;
-import matrices.exceptions.MatrixSizeMismatchException;
 
-public class Cursor extends Square{
+public class Cursor{
+
 	private final InputController inputController;
 	private final Camera camera;
-	
-	public Cursor(TextureController textureController, InputController inputController, Camera camera) throws TextureException, MatrixSizeMismatchException {
-		super(0,0,0,0,0,50,50,"cursor.png",textureController);
-		this.inputController = inputController;
+	public final DrawableGameObject cursor;
+
+	public Cursor(DrawableCreator squareCreator, InputController input, Camera camera){
+		this.cursor = squareCreator.create(0,0,0,50,50,"animated_cursor.png",3,1);
+		this.inputController = input;
 		this.camera = camera;
 	}
 	
-	public void update() throws MatrixSizeMismatchException {
+	public void update(){
 		
 		Vector worldCoord = camera.screenToWorld(new Vector((float)inputController.getMouseX(), (float)inputController.getMouseY(), 0));
-		
-		setX(worldCoord.data[0]);
-		setY(worldCoord.data[1]);
+
+		cursor.setX(worldCoord.data[0]);
+		cursor.setY(worldCoord.data[1]);
 		
 	}
 }

@@ -19,6 +19,7 @@ public class ShaderController {
 	private final int viewID;
 	private final int projectionID;
 	private final int transformID;
+	private final int textureID;
 	
 	public ShaderController(String vertShaderPath, String fragShaderPath, Window window) throws ShaderException, IOException{
 		
@@ -58,6 +59,7 @@ public class ShaderController {
 		viewID = glGetUniformLocation(ID, "view");
 		projectionID = glGetUniformLocation(ID, "projection");
 		transformID = glGetUniformLocation(ID, "transform");
+		textureID = glGetUniformLocation(ID, "texCoordTransform");
 	}
 	
 
@@ -89,6 +91,9 @@ public class ShaderController {
 			break;
 		case "transform":
 			glUniformMatrix4fv(transformID, true, matrixBuffer);
+			break;
+		case "texture":
+			glUniformMatrix4fv(textureID, true, matrixBuffer);
 			break;
 		default:
 			System.err.println("Unknown Uniform Name.");

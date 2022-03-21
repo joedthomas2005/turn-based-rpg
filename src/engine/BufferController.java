@@ -8,7 +8,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class BufferController {
+public final class BufferController {
 	
 	private final ArrayList<Float> vertices;
 	private final ArrayList<Integer> indices;
