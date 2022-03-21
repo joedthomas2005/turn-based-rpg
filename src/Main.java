@@ -20,27 +20,35 @@ public class Main {
 
         System.out.println("glfw initialised. creating window");
 		//Create window and context
-		Window window = new Window(1366, "Turn Based RPG", 1, true);
+		Window window = new Window(1366, "Turn Based RPG", 1, false);
 		System.out.println("window created");
         window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 
 		//Setup required components and controllers
-		BufferController bufferManager = new BufferController();
+		BufferController bufferController = new BufferController();
 		Camera camera = new Camera(0,0,0);
 		InputController inputController = new InputController(window, 1f);
 		ShaderController shaderController = new ShaderController("shader.vert", "shader.frag", window);
 		CameraController cameraController = new CameraController(camera, shaderController, inputController, 10f);
 		TextureController textureController = new TextureController("cursor.png", "placeholder.png");
-
+		
+		ArrayList<DrawableCreator> factories = new ArrayList<DrawableCreator>();
+		SquareFactory squareFactory = new SquareFactory(textureController);
+		factories.add(squareFactory);
+		
 		//Initialise any shapes that will be used and finally bind the VAO
-		Square.initialise(bufferManager);
-		bufferManager.bind();
+		
+		for(DrawableCreator factory : factories){
+			factory.initialise(bufferController);
+		}
+
+		bufferController.bind();
 
 		//Create object array. This will be handled by a controller later 
 		ArrayList<DrawableGameObject> drawable = new ArrayList<DrawableGameObject>();
 		
-		Cursor cursor = new Cursor(textureController, inputController, camera);
+		Cursor cursor = new Cursor(squareFactory, inputController, camera);
 		
 		double time = glfwGetTime();
 		double lastTime = glfwGetTime();
@@ -56,17 +64,18 @@ public class Main {
 			//Draw loop
 			cursor.update();
 			
-			for(Drawable object : drawable){
+			for(DrawableGameObject object : drawable){
 				object.draw(shaderController, camera);
 			}
-			cursor.draw(shaderController, camera);
+			cursor.cursor.draw(shaderController, camera);
 			
 			if(inputController.leftMouseClicked()){
 				
 				Vector squarePosition = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
-			    System.out.println("creating square at "+squarePosition.data[0]+","+squarePosition.data[1]);	
-				drawable.add(new Square(squarePosition.data[0],squarePosition.data[1],
-					 0,0,0,100,100,"placeholder.png", textureController));
+			    
+				System.out.println("creating square at "+squarePosition.data[0]+","+squarePosition.data[1]);	
+				drawable.add(squareFactory.create(squarePosition.data[0],squarePosition.data[1],
+					 0,100,100,"placeholder.png"));
 			}
 			
 			if(inputController.rightMouseClicked()){
