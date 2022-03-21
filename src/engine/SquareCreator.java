@@ -6,7 +6,7 @@ public class SquareCreator implements DrawableCreator{
 
     private int startIndex;
     private int numIndices;
-    private TextureController textures;
+    private final TextureController textures;
 
     public SquareCreator(TextureController textures){
         this.textures = textures;

@@ -11,12 +11,13 @@ import engine.exceptions.TextureBindException;
 
 public class DrawableGameObject extends GameObject {
 
-    protected int textureID;
-    protected String texturePath;
-    private int startIndex;
-    private int numIndices;
+    protected final int textureID;
+    protected final String texturePath;
+    private final int startIndex;
+    private final int numIndices;
     private int currentFrame;
-    private SpriteSheetParser parser;
+    private final SpriteSheetParser parser;
+    
     public DrawableGameObject(float x, float y, float z,
      float pitch, float yaw, float roll,
       float xScale, float yScale,
@@ -26,6 +27,7 @@ public class DrawableGameObject extends GameObject {
 
         super(x,y,z,pitch,yaw,roll,xScale,yScale);
         this.textureID = textureController.getTexture(texture);
+        this.texturePath = texture;
         this.startIndex = startIndex;
         this.numIndices = numIndices;
         this.currentFrame = 0;

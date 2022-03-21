@@ -7,17 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import matrices.Vector;
-import matrices.exceptions.MatrixSizeMismatchException;
-
 public final class Game implements Runnable{
 
 	private Window window;
-	private BufferController bufferController;
 	private Camera camera;
 	private InputController inputController;
 	private ShaderController shaderController;
 	private CameraController cameraController;
-	private TextureController textureController;
 	private DrawableCreator squareCreator;
 	private ArrayList<DrawableGameObject> drawable;
 	private Cursor cursor;
@@ -39,12 +35,12 @@ public final class Game implements Runnable{
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 		
 		//Setup required components and controllers
-		bufferController = new BufferController();
+		BufferController bufferController = new BufferController();
 		camera = new Camera(0,0,0);
 		inputController = new InputController(window, 1f);
 		shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
 		cameraController = new CameraController(camera, shaderController, inputController, 10f);
-		textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png");
+		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png");
 				
 		squareCreator = new SquareCreator(textureController);
 		//Initialise any shapes that will be used and finally bind the VAO
