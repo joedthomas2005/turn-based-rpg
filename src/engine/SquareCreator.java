@@ -38,6 +38,7 @@ public class SquareCreator implements DrawableCreator{
                 }
             }
         }
+        
         for(int i : new int[]{2,3,1,2,1,0}){
             indices.add(i);
         }

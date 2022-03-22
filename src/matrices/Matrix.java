@@ -26,7 +26,8 @@ public final class Matrix { //Final as constructor is private so I want an error
      * Columns will be shown separated by spaces with each row on a new line
      * @return a string representation of the matrix
      */
-
+    
+    @Override
     public String toString(){
         String string = "";
         for(float[] row : data){
@@ -40,8 +41,8 @@ public final class Matrix { //Final as constructor is private so I want an error
     }
 
     /**
-     * Calculate the cofactor of this matrix for a given element.
-     * This results in a cofactor matrix with the row and column of that element removed.
+     * Calculate the minor of this matrix for a given element.
+     * This results in a minor matrix with the row and column of that element removed.
      * @param row the row index of the element
      * @param column the column index of the element
      * @return a matrix with 1 less row and column than this one
@@ -462,9 +463,13 @@ public final class Matrix { //Final as constructor is private so I want an error
     public static Matrix OrthographicMatrix(float left, float right, float bottom, float top, float far, float near){
        
         Matrix ortho = IdentityMatrix4x4();
+        
+        
         ortho.data[0][0] = 2/(right - left);
         ortho.data[1][1] = 2/(top - bottom);
         ortho.data[2][2] = -2/(far - near);
+        
+        
         ortho.data[0][3] = -((right + left)/(right - left));
         ortho.data[1][3] = -((top + bottom)/(top - bottom));
         ortho.data[2][3] = -((far + near)/(far - near));

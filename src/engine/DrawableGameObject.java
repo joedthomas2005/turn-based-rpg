@@ -30,8 +30,7 @@ public class DrawableGameObject extends GameObject {
         this.numIndices = numIndices;
     };
 
-
-    public void draw(ShaderController shaderController, Camera camera, Matrix frame){
+    public void draw(ShaderController shaderController, Matrix frame){
       
         glBindTexture(GL_TEXTURE_2D, this.textureID);
 		int err = glGetError();

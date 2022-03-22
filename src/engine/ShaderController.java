@@ -47,14 +47,18 @@ public class ShaderController {
 		glAttachShader(ID, vShader);
 		glAttachShader(ID, fShader);
 		glLinkProgram(ID);
+		
 		if (glGetProgrami(ID, GL_LINK_STATUS) == 0) {
 			throw new ShaderLinkException(glGetShaderInfoLog(ID, 1024));
 		}
 		
 		glDeleteShader(vShader);
 		glDeleteShader(fShader);
+		
 		this.projection = Matrix.OrthographicMatrix(0, window.getWidth(), 0, window.getHeight(), 1, -1);
+		
 		System.out.println(this.projection.toString());
+		
 		glUseProgram(ID);
 		viewID = glGetUniformLocation(ID, "view");
 		projectionID = glGetUniformLocation(ID, "projection");
