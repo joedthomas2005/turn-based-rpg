@@ -9,7 +9,7 @@ public class Cursor{
 	public final DrawableGameObject cursor;
 
 	public Cursor(DrawableCreator squareCreator, InputController input, Camera camera){
-		this.cursor = squareCreator.create(0,0,0,50,50,"animated_cursor.png",3,1);
+		this.cursor = squareCreator.create(0,0,0,50,50,"animated_cursor.png");
 		this.inputController = input;
 		this.camera = camera;
 	}

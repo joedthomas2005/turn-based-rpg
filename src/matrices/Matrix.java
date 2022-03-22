@@ -460,6 +460,7 @@ public final class Matrix { //Final as constructor is private so I want an error
     }
     
     public static Matrix OrthographicMatrix(float left, float right, float bottom, float top, float far, float near){
+       
         Matrix ortho = IdentityMatrix4x4();
         ortho.data[0][0] = 2/(right - left);
         ortho.data[1][1] = 2/(top - bottom);

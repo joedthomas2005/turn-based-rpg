@@ -75,12 +75,15 @@ public class ShaderController {
 	public void setMat4f(String name, Matrix matrix) {
 
         FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16); 
+
 		for(float[] row : matrix.data){
 			for(float column: row){
                 matrixBuffer.put(column);
             }
 		}
+
         matrixBuffer.rewind();
+
 		switch(name) {
 			
 		case "view":
@@ -100,6 +103,7 @@ public class ShaderController {
 			break;
 		
 		}
+		
 		matrixBuffer.clear();
 	}
 	

@@ -48,7 +48,10 @@ public class SquareCreator implements DrawableCreator{
     }
 
     @Override
-    public DrawableGameObject create(float x, float y, float rotation, float xScale, float yScale, String texture, int numFrames, int numRows){
-        return new DrawableGameObject(x, y, 0, 0, 0, rotation, xScale, yScale, textures, texture, startIndex, numIndices, numFrames, numRows);
+    public DrawableGameObject create(float x, float y,
+        float rotation, 
+        float xScale, float yScale,
+        String texture){
+        return new DrawableGameObject(x, y, 0, 0, 0, rotation, xScale, yScale, textures, texture, startIndex, numIndices);
     }
 }
