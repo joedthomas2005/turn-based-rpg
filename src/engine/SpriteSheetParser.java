@@ -16,10 +16,12 @@ public final class SpriteSheetParser {
 
         for(int row = 0; row < numRows; row++){
             for(int frame = 0; frame < numPerRow; frame++){
+
                 Matrix textureTranslate = Matrix.TranslationMatrix(frame * frameWidth, row * frameHeight);
                 Matrix textureScale = Matrix.ScaleMatrix(frameWidth, frameHeight);
                 Matrix textureCoordTransform = textureTranslate.multiply(textureScale);
                 this.frames.add(textureCoordTransform);
+                System.out.println(textureCoordTransform);
             }
         }
     }

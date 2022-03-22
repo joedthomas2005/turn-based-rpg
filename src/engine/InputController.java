@@ -23,7 +23,7 @@ public class InputController {
 		this.rmbFirstPressed = false;
 	}
 	
-	public InputController(Window window, float sensitivity) {
+	public InputController(Window window) {
 		
 		this.lmbDown = false;
 		this.rmbDown = false;
