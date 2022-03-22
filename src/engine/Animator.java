@@ -6,8 +6,8 @@ import matrices.Matrix;
 
 public class Animator {
 
-    private SpriteSheetParser frames;
-    private int[][] animationRanges;
+    private final SpriteSheetParser frames;
+    private final int[][] animationRanges;
     private int currentFrame;
     private int currentAnimation;
 

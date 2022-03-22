@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class ActorManager {
     
-    private ShaderController shaders;
-    private DrawableCreator creator; 
+    private final ShaderController shaders;
+    private final DrawableCreator creator; 
     private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), new int[]{0,1});
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
     
@@ -48,8 +48,7 @@ public class ActorManager {
      * @return a new instance of Actor
      */
     public Actor create(float x, float y, float rotation, float xScale, float yScale, String texture, Animator animator) {
-    	Actor newActor = new Actor(x, y, rotation, xScale, yScale, texture, animator, creator);
-    	return newActor;
+    	return new Actor(x, y, rotation, xScale, yScale, texture, animator, creator);
     }
     
     /**

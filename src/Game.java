@@ -43,7 +43,6 @@ public final class Game implements Runnable{
 		shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
 		cameraController = new CameraController(camera, shaderController, inputController, 10f);
 		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png", "4frame.png");
-		twoframeAnimator = new Animator(new SpriteSheetParser(2, 1), new int[]{0,1});
 		DrawableCreator squareCreator = new SquareCreator(textureController);
 
 		this.actorManager = new ActorManager(squareCreator, shaderController);
