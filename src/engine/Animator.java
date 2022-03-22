@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.Currency;
+
 import matrices.Matrix;
 
 public class Animator {
@@ -17,25 +19,33 @@ public class Animator {
 
     }
 
+    public boolean isFinished(){
+        
+        return this.currentFrame == animationRanges[currentAnimation][1];
+    }
+
     public void setState(int animation){
-        this.currentAnimation = animation;
+        int animationNumber = animation;
+        if(animationNumber >= animationRanges.length){
+            animationNumber -= animationRanges.length;
+        }
+        this.currentAnimation = animationNumber;
+    }
+
+    public int getState(){
+        return this.currentAnimation;
     }
 
     public Matrix getFrame(){
-
-        int frame = currentFrame;
-        while(frame < animationRanges[currentAnimation][0]){
-            frame += animationRanges[currentAnimation][1] - animationRanges[currentAnimation][0];
-        }
-        while(frame > animationRanges[currentAnimation][1]){
-            frame -= animationRanges[currentAnimation][1] - animationRanges[currentAnimation][1];
-        }
-        return frames.getFrame(frame);
+        return frames.getFrame(currentFrame);
 
     }
 
     public void nextFrame(){
         this.currentFrame++;
+        if(this.currentFrame > animationRanges[currentAnimation][1]){
+            this.currentFrame = animationRanges[currentAnimation][0];
+        }
     }
 
 }

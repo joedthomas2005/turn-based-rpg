@@ -27,9 +27,19 @@ public class Actor extends GameObject{
         animator.nextFrame();
     }
 
+    public int getAnimationState(){
+        return animator.getState();
+    }
+
+    public boolean animationFinished(){
+        return animator.isFinished();
+    }
     public void setAnimationState(int state){
         animator.setState(state);
     }
 
+    public void nextAnimationState(){
+        animator.setState(animator.getState() + 1);
+    }
 
 }

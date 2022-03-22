@@ -14,12 +14,13 @@ public final class Game implements Runnable{
 	private InputController inputController;
 	private ShaderController shaderController;
 	private CameraController cameraController;
-	private DrawableCreator squareCreator;
-	private ArrayList<DrawableGameObject> drawable;
+	private ActorManager actorManager;
+	private Animator twoframeAnimator;
 	private Cursor cursor;
 	private double deltaTime;
 	private double time;
 	private double lastTime;
+	private int curFrame;
 
     public Game() throws ShaderException, IOException{
 		initialise();
@@ -30,29 +31,30 @@ public final class Game implements Runnable{
 		glfwInit();
 
 		//Create window and context
-		window = new Window(1366, "Turn Based RPG", 1, false);
+		window = new Window(1920, "Turn Based RPG", 1, true);
 		window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 		
 		//Setup required components and controllers
 		BufferController bufferController = new BufferController();
 		camera = new Camera(0,0,0);
-		inputController = new InputController(window, 1f);
+
+		inputController = new InputController(window);
 		shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
 		cameraController = new CameraController(camera, shaderController, inputController, 10f);
-		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png");
-				
-		squareCreator = new SquareCreator(textureController);
+		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png", "4frame.png");
+		twoframeAnimator = new Animator(new SpriteSheetParser(2, 1), new int[]{0,1});
+		DrawableCreator squareCreator = new SquareCreator(textureController);
+
+		this.actorManager = new ActorManager(squareCreator, shaderController);
 		//Initialise any shapes that will be used and finally bind the VAO
 				
 		squareCreator.initialise(bufferController);
 		bufferController.bind();
 		
 		//Create object array. This will be handled by a controller later 
-		drawable = new ArrayList<DrawableGameObject>();
-		DrawableGameObject square = squareCreator.create(0,0,0,100,100,"2frame.png",2,1);
-		drawable.add(square);
-		cursor = new Cursor(squareCreator, inputController, camera);
+		actorManager.add(actorManager.create(0,0,0,100,100,"placeholder.png"));
+		cursor = new Cursor(actorManager, inputController, camera);
 	}
 
 	@Override
@@ -61,6 +63,7 @@ public final class Game implements Runnable{
 		lastTime = glfwGetTime();
 		deltaTime = 0;
 		
+		curFrame = 0;
 		while(!window.shouldClose()){
 			update();
 		}
@@ -70,61 +73,63 @@ public final class Game implements Runnable{
 
 
 	public final void update() {
-		
+		curFrame++;
 		time = glfwGetTime();
 		deltaTime = (time - lastTime) * 100;
 	
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//Draw loop
-		cursor.update();
-			
-		for(DrawableGameObject object : drawable){
-			object.draw(shaderController, camera);
-			object.setFrame(object.getFrame() + 1);
-		}
+		
+		actorManager.drawAll();
+		cursor.draw();
 
-		cursor.cursor.draw(shaderController, camera);
-			
 		if(inputController.leftMouseClicked()){
-				
+			cursor.click();
 			Vector squarePosition = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
-			    
-			drawable.add(squareCreator.create(squarePosition.data[0],squarePosition.data[1],
-				 0,100,100,"2frame.png",2,1));
+			Animator squareAnimator = new Animator(new SpriteSheetParser(4, 2), new int[]{0,1}, new int[]{2,3});
+			actorManager.add(actorManager.create(squarePosition.data[0], squarePosition.data[1], 0, 100, 100, "4frame.png", squareAnimator));
 		}
 			
 		if(inputController.rightMouseClicked()){
 				
 			Vector worldCoord = camera.screenToWorld((float)inputController.getMouseX(), (float)inputController.getMouseY());
 
-			DrawableGameObject toRemove = null;
-			for(DrawableGameObject object: drawable){
+			Actor toRemove = null;
+			for(Actor actor: actorManager.getActors()){
 					
-				if(worldCoord.data[0] < object.getX() + object.getXScale() && worldCoord.data[0] > object.getX() - object.getXScale() &&
-						worldCoord.data[1] < object.getY() + object.getYScale() && worldCoord.data[1] > object.getY() - object.getYScale()){
-					toRemove = object;
+				if(worldCoord.data[0] < actor.getX() + actor.getXScale() && worldCoord.data[0] > actor.getX() - actor.getXScale() &&
+						worldCoord.data[1] < actor.getY() + actor.getYScale() && worldCoord.data[1] > actor.getY() - actor.getYScale() && actor != cursor.cursor){
+					toRemove = actor;
 				}	
 			}
 				
 			if(toRemove != null){
-				drawable.remove(toRemove);
+				actorManager.delete(toRemove);
 			}
 		}
-		
-		if(inputController.isKeyDown(GLFW_KEY_LEFT_SHIFT)){
-			cursor.cursor.setFrame(1);
-		}
-		else if(inputController.isKeyDown(GLFW_KEY_SPACE)){
-			cursor.cursor.setFrame(2);
-		}
-		else{
-			cursor.cursor.setFrame(0);
-		}
+
+
 		if(inputController.isKeyDown(GLFW_KEY_ESCAPE)){
 			glfwSetWindowShouldClose(window.getWindow(), true);
 		}
 
+		if(curFrame % 100 == 0){
+			actorManager.animateAll();	
+		}
+
+		if(curFrame % 30 == 0){
+			cursor.cursor.animate();
+		}
+
+		if(inputController.isKeyFirstPressed(GLFW_KEY_LEFT_CONTROL)){
+			for(Actor actor : actorManager.getActors()){
+				actor.nextAnimationState();
+			}
+		}
+
+
+	
 		cameraController.update((float)deltaTime);
 		inputController.reset();
 		window.update();
