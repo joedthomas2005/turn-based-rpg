@@ -4,22 +4,24 @@ import matrices.Matrix;
 import matrices.Vector;
 import matrices.exceptions.MatrixSizeMismatchException;
 
-public class Camera {
+public class Camera extends GameObject{
 	
-	private Matrix view = Matrix.IdentityMatrix4x4();
-	private Vector position;
 	private Boolean moved = true;
 	
-	public Camera(float x, float y, float z) throws MatrixSizeMismatchException{
-		this.position = new Vector(-x,-y,z);
-		genViewMatrix();
+	public Camera(float x, float y, float z){
+		super(-x,-y,z,0,0,0,1,1);
+		genTransformMatrix();
+	}
+	
+	@Override
+	public void move(float x, float y, float z){
+		super.move(-x,-y,-z);
 	}
 	
 	public Vector screenToWorld(Vector screenCoords) throws MatrixSizeMismatchException {
 
-		Matrix invertedView = Matrix.IdentityMatrix4x4().translate(position.negate().data[0], position.negate().data[1], position.negate().data[2]);
-        	Vector worldCoords = invertedView.transform(screenCoords);
-		return worldCoords;
+		Matrix invertedView = Matrix.IdentityMatrix4x4().translate(-x, -y, -z);
+        return invertedView.transform(screenCoords);
 	}
 	
 	public Vector screenToWorld(float x, float y) throws MatrixSizeMismatchException {
@@ -27,7 +29,7 @@ public class Camera {
 	}
 	
 	public Vector worldToScreen(Vector worldCoords) throws MatrixSizeMismatchException {
-		return view.transform(worldCoords);
+		return trans.transform(worldCoords);
 	}
 	
 	public Vector worldToScreen(float x, float y) throws MatrixSizeMismatchException {
@@ -37,56 +39,7 @@ public class Camera {
 	public void update() {
 		this.moved = false;
 	}
-	
-	public final void genViewMatrix() throws MatrixSizeMismatchException {
-		
-		this.view = Matrix.IdentityMatrix4x4().translate(position.data[0], position.data[1], position.data[2]);
-        System.out.println("view matrix: " + view.toString());
 
-	}
-	
-	public void move(double x, double y, float z) throws MatrixSizeMismatchException {
-		
-		this.position.data[0] += -x;
-		this.position.data[1] += -y;
-		this.position.data[2] += z;
-		this.moved = true;
-		genViewMatrix();
-		
-	}
-	
-	public void setPos(float x, float y, float z) throws MatrixSizeMismatchException {
-		this.position = new Vector(x,y,z);
-		this.moved = true;
-		genViewMatrix();
-	}
-	
-	public void setPos(Vector position) throws MatrixSizeMismatchException {
-		this.position = position;
-		this.moved = true;
-		genViewMatrix();
-	}
-
-	public Matrix getView() {
-		return view;
-	}
-
-	public Vector getPos(){
-		return position;
-	}
-
-	public float getX(){
-		return position.data[0];
-	}
-
-	public float getY(){
-		return position.data[1];
-	}
-
-	public float getZ(){
-		return position.data[2];
-	}
-	
 	public Boolean getMoved() {
 		return moved;
 	}

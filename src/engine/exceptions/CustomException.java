@@ -1,6 +1,6 @@
 package engine.exceptions;
 
-public class CustomException extends Exception{
+public class CustomException extends RuntimeException{
 	private static final long serialVersionUID = -6794596399895219527L;
 
 	protected static String titleCase(String string) {

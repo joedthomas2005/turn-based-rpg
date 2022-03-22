@@ -1,23 +1,18 @@
 package engine;
 
 import static org.lwjgl.opengl.GL11.glGetError;
-import java.util.ArrayList;
 
-import engine.exceptions.DrawElementsException;
-import engine.exceptions.TextureBindException;
 import engine.exceptions.TextureLoadException;
 import matrices.Matrix;
 import matrices.exceptions.MatrixSizeMismatchException;
 
-public abstract class GameObject {
+public class GameObject {
 
 	protected float x, y, z, pitch, yaw, roll, xScale, yScale;
 	protected Matrix trans = Matrix.IdentityMatrix4x4();
-	protected String texturePath;
-	protected int textureID;
 	protected Boolean visible;
 	
-	protected GameObject(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale, String texture, TextureController textureManager) throws TextureLoadException, MatrixSizeMismatchException {
+	protected GameObject(float x, float y, float z, float pitch, float yaw, float roll, float xScale, float yScale) throws TextureLoadException, MatrixSizeMismatchException {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -26,29 +21,11 @@ public abstract class GameObject {
 		this.roll = roll; 
 		this.xScale = xScale;
 		this.yScale = yScale;
-		this.visible = true;
 		glGetError();
 		
-		this.texturePath = texture;
-		this.textureID = textureManager.getTexture(texture);
 		genTransformMatrix();
 	}
 	
-	public abstract void draw(ShaderController controller, Camera camera, ArrayList<GameObject> objects) throws TextureBindException, DrawElementsException;
-
-	protected boolean checkVisible(Camera camera, ShaderController shader, ArrayList<GameObject> objects) {
-		return true;
-	}
-	
-	public int getTextureID() {
-		return textureID;
-	}
-	
-	public String getTexturePath() {
-		return texturePath;
-	}
-	
-
 	public void move(float x, float y, float z) throws MatrixSizeMismatchException {
 		this.x += x;
 		this.y += y;
@@ -110,7 +87,7 @@ public abstract class GameObject {
 		this.genTransformMatrix();
 	}
 	
-	protected final void genTransformMatrix() throws MatrixSizeMismatchException {
+	protected final void genTransformMatrix(){
 		this.trans = Matrix.IdentityMatrix4x4().translate(x,y,z).rotate(pitch,yaw,roll).scale(xScale,yScale);
     }
 	
@@ -132,5 +109,9 @@ public abstract class GameObject {
 	}
 	public float getYScale(){
 		return yScale;
+	}
+
+	public Matrix getTransformMatrix(){
+		return trans;
 	}
 }

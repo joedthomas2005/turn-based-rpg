@@ -8,6 +8,7 @@ public class CameraController {
     private final ShaderController shaderController;
     private final InputController inputController;
     private float camSpeed;
+    
     public CameraController(Camera camera, ShaderController shaderController, InputController inputController, float camSpeed){
         this.camera = camera;
         this.camSpeed = camSpeed;
@@ -18,18 +19,18 @@ public class CameraController {
     public void update(double deltaTime) throws MatrixSizeMismatchException{
         
         if(inputController.isKeyDown(GLFW_KEY_A)){
-            camera.move(-camSpeed * deltaTime, 0, 0);
+            camera.move((float) (-camSpeed * deltaTime), 0, 0);
         }
         if(inputController.isKeyDown(GLFW_KEY_D)){
-            camera.move(camSpeed * deltaTime, 0, 0);
+            camera.move((float) (camSpeed * deltaTime), 0, 0);
         }
         if(inputController.isKeyDown(GLFW_KEY_S)){
-            camera.move(0,-camSpeed * deltaTime,0);
+            camera.move(0,(float) (-camSpeed * deltaTime),0);
         }
         if(inputController.isKeyDown(GLFW_KEY_W)){
-            camera.move(0,camSpeed * deltaTime,0);
+            camera.move(0,(float) (camSpeed * deltaTime),0);
         }
-        shaderController.setView(camera.getView());
+        shaderController.setView(camera.getTransformMatrix());
     }
 
     public void setCamSpeed(float camSpeed){
