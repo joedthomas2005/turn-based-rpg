@@ -4,7 +4,6 @@ import engine.exceptions.ShaderException;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL30.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import matrices.Vector;
 public final class Game implements Runnable{
@@ -12,10 +11,8 @@ public final class Game implements Runnable{
 	private Window window;
 	private Camera camera;
 	private InputController inputController;
-	private ShaderController shaderController;
 	private CameraController cameraController;
 	private ActorManager actorManager;
-	private Animator twoframeAnimator;
 	private Cursor cursor;
 	private double deltaTime;
 	private double time;
@@ -40,7 +37,7 @@ public final class Game implements Runnable{
 		camera = new Camera(0,0,0);
 
 		inputController = new InputController(window);
-		shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
+		ShaderController shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
 		cameraController = new CameraController(camera, shaderController, inputController, 10f);
 		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png", "4frame.png");
 		DrawableCreator squareCreator = new SquareCreator(textureController);

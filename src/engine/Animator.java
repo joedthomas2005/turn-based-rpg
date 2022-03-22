@@ -1,7 +1,5 @@
 package engine;
 
-import java.util.Currency;
-
 import matrices.Matrix;
 
 public class Animator {
