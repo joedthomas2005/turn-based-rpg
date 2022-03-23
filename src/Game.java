@@ -40,9 +40,9 @@ public final class Game implements Runnable{
 		ShaderController shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
 		cameraController = new CameraController(camera, shaderController, inputController, 10f);
 		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png", "4frame.png");
-		DrawableCreator squareCreator = new SquareCreator(textureController);
-
-		this.actorManager = new ActorManager(squareCreator, shaderController);
+	
+		DrawableCreator squareCreator = new SquareCreator(textureController, shaderController);
+		this.actorManager = new ActorManager(squareCreator);
 		//Initialise any shapes that will be used and finally bind the VAO
 				
 		squareCreator.initialise(bufferController);

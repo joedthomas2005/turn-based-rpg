@@ -16,10 +16,11 @@ public class DrawableGameObject extends GameObject {
     protected final String texturePath;
     private final int startIndex;
     private final int numIndices;
-        
+    private ShaderController shaders;
+
     public DrawableGameObject(float x, float y, float z,
      float pitch, float yaw, float roll,
-      float xScale, float yScale,
+      float xScale, float yScale, ShaderController shaders,
        TextureController textureController, String texture,
         int startIndex, int numIndices){
 
@@ -30,7 +31,7 @@ public class DrawableGameObject extends GameObject {
         this.numIndices = numIndices;
     };
 
-    public void draw(ShaderController shaderController, Matrix frame){
+    public void draw(Matrix frame){
       
         glBindTexture(GL_TEXTURE_2D, this.textureID);
 		int err = glGetError();
@@ -38,8 +39,8 @@ public class DrawableGameObject extends GameObject {
 			throw new TextureBindException(this.texturePath, this.textureID);
 		}
 		
-        shaderController.setMat4f("texture", frame);
-		shaderController.setMat4f("transform", this.trans);
+        shaders.setMat4f("texture", frame);
+		shaders.setMat4f("transform", this.trans);
 		
 		glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, startIndex * Integer.BYTES);
 		err = glGetError();

@@ -8,14 +8,11 @@ import java.util.ArrayList;
  */
 public class ActorManager {
     
-    private final ShaderController shaders;
     private final DrawableCreator creator; 
     private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), new int[]{0,1});
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
     
-    public ActorManager(DrawableCreator creator, ShaderController shaders){
-
-        this.shaders = shaders;
+    public ActorManager(DrawableCreator creator){
         this.creator = creator;
         
     }  
@@ -33,7 +30,7 @@ public class ActorManager {
      * @param actor the actor to draw
      */
     public void draw(Actor actor){
-        actor.draw(shaders);
+        actor.draw();
     }
 
     /**
@@ -78,7 +75,7 @@ public class ActorManager {
      */
     public void drawAll() {
     	for(Actor actor : actors) {
-    		actor.draw(shaders);
+    		actor.draw();
     	}
     }
     
