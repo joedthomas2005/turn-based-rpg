@@ -110,11 +110,11 @@ public final class Game implements Runnable{
 			glfwSetWindowShouldClose(window.getWindow(), true);
 		}
 
-		if(curFrame % 100 == 0){
+		if(curFrame % 50 == 0){
 			actorManager.animateAll();	
 		}
 
-		if(curFrame % 30 == 0){
+		if(curFrame % 10 == 0){
 			cursor.cursor.animate();
 		}
 

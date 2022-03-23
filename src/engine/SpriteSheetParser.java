@@ -21,7 +21,7 @@ public final class SpriteSheetParser {
                 Matrix textureScale = Matrix.ScaleMatrix(frameWidth, frameHeight);
                 Matrix textureCoordTransform = textureTranslate.multiply(textureScale);
                 this.frames.add(textureCoordTransform);
-                System.out.println(textureCoordTransform);
+                
             }
         }
     }

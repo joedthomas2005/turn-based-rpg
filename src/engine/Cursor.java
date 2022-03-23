@@ -11,7 +11,8 @@ public class Cursor{
 
 	public Cursor(ActorManager actorManager, InputController input, Camera camera){
 		this.actorManager = actorManager;
-		this.cursor = actorManager.create(0,0,0,100,100,"animated_cursor.png", new Animator(new SpriteSheetParser(4, 2), new int[]{0,0}, new int[]{1,3}));
+		this.cursor = actorManager.create(0,0,0,50,55,"animated_cursor.png",
+		 new Animator(new SpriteSheetParser(4, 2), new int[]{0,0}, new int[]{1,3}));
 		this.inputController = input;
 		this.camera = camera;
 	}
