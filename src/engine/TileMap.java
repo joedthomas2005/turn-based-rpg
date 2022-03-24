@@ -11,8 +11,10 @@ import globals.PATHS;
 public class TileMap {
 
     private ArrayList<Actor> tiles = new ArrayList<Actor>();
-
+    private ActorManager actorManager;
+    
     public TileMap(String path, ActorManager actorManager){
+    	this.actorManager = actorManager;
         String fullPath = PATHS.TileMapDir + path;
 
         try {
@@ -38,7 +40,7 @@ public class TileMap {
 
     public void draw(){
         for(Actor tile : tiles){
-            tile.draw();
+            actorManager.draw(tile);
         }
     }
 }

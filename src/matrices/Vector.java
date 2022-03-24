@@ -24,6 +24,41 @@ public class Vector {
 		
 	}
 	
+	
+	public float x() {
+		return this.data[0];
+	}
+	
+	public float y() {
+		try {
+			return this.data[1];
+		}
+		catch(Exception e) {
+			System.err.println("WARNING: VECTOR DOES NOT HAVE Y VALUE.");
+			return 0;
+		}
+	}
+	
+	public float z() {
+		try {
+			return this.data[2];
+		}
+		catch(Exception e) {
+			System.err.println("WARNING: VECTOR DOES NOT HAVE Z VALUE.");
+			return 0;
+		}
+	}
+	
+	public float w() {
+		try {
+			return this.data[3];
+		}
+		
+		catch(Exception e) {
+			System.err.println("WARNING: VECTOR DOES NOT HAVE W VALUE.");
+			return 0;
+		}
+	}
 	/**
 	 * Performs a component-wise addition (all components of this vector are added to the corresponding components of the other)
 	 * between this and another vector of the same size and returns the resultant vector. 

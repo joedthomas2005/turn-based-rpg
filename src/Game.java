@@ -29,13 +29,13 @@ public final class Game implements Runnable{
 		glfwInit();
 
 		//Create window and context
-		window = new Window(1920, "Turn Based RPG", 1, true);
+		window = new Window(1920, "Turn Based RPG", 1, false);
 		window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 		
 		//Setup required components and controllers
 		BufferController bufferController = new BufferController();
-		camera = new Camera(0,0,0);
+		camera = new Camera(0,0,0, window);
 
 		inputController = new InputController(window);
 		ShaderController shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
@@ -43,7 +43,7 @@ public final class Game implements Runnable{
 		TextureController textureController = new TextureController("cursor.png", "placeholder.png", "2frame.png", "animated_cursor.png", "4frame.png");
 	
 		DrawableCreator squareCreator = new SquareCreator(textureController, shaderController);
-		this.actorManager = new ActorManager(squareCreator);
+		this.actorManager = new ActorManager(squareCreator, camera);
 		//Initialise any shapes that will be used and finally bind the VAO
 				
 		squareCreator.initialise(bufferController);
@@ -77,7 +77,6 @@ public final class Game implements Runnable{
 		deltaTime = (time - lastTime) * 100;
 	
 		glClear(GL_COLOR_BUFFER_BIT);
-		
 		//Draw loop
 		tileMap.draw();
 		actorManager.drawAll();

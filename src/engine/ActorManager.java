@@ -11,10 +11,11 @@ public class ActorManager {
     private final DrawableCreator creator; 
     private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), new int[]{0,1});
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
+    private final Camera camera;
     
-    public ActorManager(DrawableCreator creator){
+    public ActorManager(DrawableCreator creator, Camera camera){
         this.creator = creator;
-        
+        this.camera = camera;
     }  
     
     /**
@@ -23,14 +24,6 @@ public class ActorManager {
      */
     public ArrayList<Actor> getActors(){
         return actors;
-    }
-
-    /**
-     * Draws an actor with the stored shaderController
-     * @param actor the actor to draw
-     */
-    public void draw(Actor actor){
-        actor.draw();
     }
 
     /**
@@ -70,6 +63,17 @@ public class ActorManager {
         actors.add(actor);
     }
 
+    /**
+     * Draw the actor if it is visible in the stored camera's viewport.
+     * @param actor the actor to draw.
+     */
+    public void draw(Actor actor) {
+    	if(camera.isPointVisible(actor.x - actor.getXScale()/2, actor.x + actor.getXScale()/2, actor.y - actor.getYScale()/2, actor.y + actor.getYScale()/2)) {
+    		
+    		actor.draw();
+    	}
+    }
+    
     /**
      * Draw all actors in the stored actor list.
      */
