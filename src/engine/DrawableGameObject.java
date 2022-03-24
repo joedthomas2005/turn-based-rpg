@@ -28,6 +28,7 @@ public class DrawableGameObject extends GameObject {
         this.textureID = textureController.getTexture(texture);
         this.texturePath = texture;
         this.startIndex = startIndex;
+        this.shaders = shaders;
         this.numIndices = numIndices;
     };
 

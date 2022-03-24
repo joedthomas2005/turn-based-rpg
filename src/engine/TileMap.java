@@ -9,14 +9,14 @@ import java.util.List;
 import globals.PATHS;
 
 public class TileMap {
-    private String path;
-    private ArrayList<Actor> tiles;
 
-    public TileMap(String path){
-        this.path = PATHS.TileMapDir + path;
+    private ArrayList<Actor> tiles = new ArrayList<Actor>();
+
+    public TileMap(String path, ActorManager actorManager){
+        String fullPath = PATHS.TileMapDir + path;
 
         try {
-            List<String> tileMapData = Files.readAllLines(Path.of(path));
+            List<String> tileMapData = Files.readAllLines(Path.of(fullPath));
             float tileWidth = Integer.parseInt(tileMapData.get(0));
             float tileHeight = Integer.parseInt(tileMapData.get(1));
             int tileMapWidth = Integer.parseInt(tileMapData.get(2));
@@ -25,7 +25,7 @@ public class TileMap {
 
             for(int x = 0; x < tileMapWidth; x++){
                 for(int y = 0; y < tileMapHeight; y++){
-                    tiles.add(new Actor(tileWidth * x, tileHeight * y, 0, tileWidth, tileHeight, drawableCreator, textureController, texture);
+                    tiles.add(actorManager.create(tileWidth * x, tileHeight * y, 0, tileWidth, tileHeight, tileTexture));
                 }
             }
             
@@ -34,5 +34,11 @@ public class TileMap {
             e.printStackTrace();
         }
 
+    }
+
+    public void draw(){
+        for(Actor tile : tiles){
+            tile.draw();
+        }
     }
 }
