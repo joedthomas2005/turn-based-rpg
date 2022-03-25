@@ -49,8 +49,6 @@ public final class Game implements Runnable{
 		squareCreator.initialise(bufferController);
 		bufferController.bind();
 		
-		//Create object array. This will be handled by a controller later 
-		actorManager.add(actorManager.create(0,0,0,100,100,"placeholder.png"));
 		cursor = new Cursor(actorManager, inputController, camera);
 
 		tileMap = new TileMap("test.tlm", actorManager);
@@ -79,7 +77,6 @@ public final class Game implements Runnable{
 		glClear(GL_COLOR_BUFFER_BIT);
 		//Draw loop
 		tileMap.draw();
-		actorManager.drawAll();
 		cursor.draw();
 
 		if(inputController.leftMouseClicked()){

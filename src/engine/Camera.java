@@ -41,11 +41,13 @@ public class Camera extends GameObject{
 	}
 	
 	public boolean isRectVisible(float left, float right, float bottom, float top) {
-		Vector screenCoords = worldToScreen(x,y);
-		return screenCoords.x() < window.getWidth()
-				&& screenCoords.x() > 0
-				&& screenCoords.y() < window.getHeight()
-				&& screenCoords.y() > 0;
+		Vector leftTop = worldToScreen(left, top);
+		Vector rightBottom = worldToScreen(right, bottom);
+
+		return (leftTop.x() < window.getWidth()
+				&& rightBottom.x() > 0
+				&& rightBottom.y() < window.getHeight()
+				&& leftTop.y() > 0);
 	}
 	
 	public void update() {

@@ -13,7 +13,6 @@ public class Actor extends GameObject{
     }
 
     public void draw(){
-        
         sprite.setX(x);
         sprite.setY(y);
         sprite.setRoll(roll);

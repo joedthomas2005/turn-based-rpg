@@ -22,8 +22,8 @@ public class SquareCreator implements DrawableCreator{
 
         for(int w = 1; w >= -1; w -= 2) {
             for (int h = 1; h >= -1; h -=2) {
-                vertices.add(w * 1f);
-                vertices.add(h * 1f);
+                vertices.add(w * 0.5f);
+                vertices.add(h * 0.5f);
                 vertices.add(0f);
 
                 if(w < 0) {

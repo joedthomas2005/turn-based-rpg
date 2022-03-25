@@ -68,8 +68,7 @@ public class ActorManager {
      * @param actor the actor to draw.
      */
     public void draw(Actor actor) {
-    	if(camera.isPointVisible(actor.x - actor.getXScale()/2, actor.x + actor.getXScale()/2, actor.y - actor.getYScale()/2, actor.y + actor.getYScale()/2)) {
-    		
+    	if(camera.isRectVisible(actor.x - actor.getXScale()/2, actor.x + actor.getXScale()/2, actor.y - actor.getYScale()/2, actor.y + actor.getYScale()/2)) {	
     		actor.draw();
     	}
     }
