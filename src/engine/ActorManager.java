@@ -8,16 +8,14 @@ import java.util.ArrayList;
  */
 public class ActorManager {
     
-    private final ShaderController shaders;
     private final DrawableCreator creator; 
     private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), new int[]{0,1});
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
+    private final Camera camera;
     
-    public ActorManager(DrawableCreator creator, ShaderController shaders){
-
-        this.shaders = shaders;
+    public ActorManager(DrawableCreator creator, Camera camera){
         this.creator = creator;
-        
+        this.camera = camera;
     }  
     
     /**
@@ -26,14 +24,6 @@ public class ActorManager {
      */
     public ArrayList<Actor> getActors(){
         return actors;
-    }
-
-    /**
-     * Draws an actor with the stored shaderController
-     * @param actor the actor to draw
-     */
-    public void draw(Actor actor){
-        actor.draw(shaders);
     }
 
     /**
@@ -74,11 +64,21 @@ public class ActorManager {
     }
 
     /**
+     * Draw the actor if it is visible in the stored camera's viewport.
+     * @param actor the actor to draw.
+     */
+    public void draw(Actor actor) {
+    	if(camera.isRectVisible(actor.x - actor.getXScale()/2, actor.x + actor.getXScale()/2, actor.y - actor.getYScale()/2, actor.y + actor.getYScale()/2)) {	
+    		actor.draw();
+    	}
+    }
+    
+    /**
      * Draw all actors in the stored actor list.
      */
     public void drawAll() {
     	for(Actor actor : actors) {
-    		actor.draw(shaders);
+    		actor.draw();
     	}
     }
     

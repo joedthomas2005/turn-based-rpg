@@ -7,11 +7,15 @@ import matrices.exceptions.MatrixSizeMismatchException;
 public class Camera extends GameObject{
 	
 	private Boolean moved = true;
+	private Window window;
 	
-	public Camera(float x, float y, float z){
+	public Camera(float x, float y, float z, Window window){
 		super(-x,-y,z,0,0,0,1,1);
+		this.window = window;
 		genTransformMatrix();
 	}
+	
+	
 	
 	@Override
 	public void move(float x, float y, float z){
@@ -34,6 +38,16 @@ public class Camera extends GameObject{
 	
 	public Vector worldToScreen(float x, float y) throws MatrixSizeMismatchException {
 		return worldToScreen(new Vector(x,y,0));
+	}
+	
+	public boolean isRectVisible(float left, float right, float bottom, float top) {
+		Vector leftTop = worldToScreen(left, top);
+		Vector rightBottom = worldToScreen(right, bottom);
+
+		return (leftTop.x() < window.getWidth()
+				&& rightBottom.x() > 0
+				&& rightBottom.y() < window.getHeight()
+				&& leftTop.y() > 0);
 	}
 	
 	public void update() {

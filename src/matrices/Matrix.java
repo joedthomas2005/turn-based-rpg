@@ -32,7 +32,7 @@ public final class Matrix { //Final as constructor is private so I want an error
         String string = "";
         for(float[] row : data){
             for(float column : row){
-                string += column + " ";
+                string += column + "\t";
             }
             string += "\n";
         }
@@ -464,7 +464,6 @@ public final class Matrix { //Final as constructor is private so I want an error
        
         Matrix ortho = IdentityMatrix4x4();
         
-        
         ortho.data[0][0] = 2/(right - left);
         ortho.data[1][1] = 2/(top - bottom);
         ortho.data[2][2] = -2/(far - near);
@@ -473,6 +472,8 @@ public final class Matrix { //Final as constructor is private so I want an error
         ortho.data[0][3] = -((right + left)/(right - left));
         ortho.data[1][3] = -((top + bottom)/(top - bottom));
         ortho.data[2][3] = -((far + near)/(far - near));
+        
+        System.out.println("Orthographic Matrix: \n" + ortho);
         return ortho;
     }
     //#endregion

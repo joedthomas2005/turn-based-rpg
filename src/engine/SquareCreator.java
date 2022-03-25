@@ -7,9 +7,11 @@ public class SquareCreator implements DrawableCreator{
     private int startIndex;
     private int numIndices;
     private final TextureController textures;
+    private ShaderController shaders;
 
-    public SquareCreator(TextureController textures){
+    public SquareCreator(TextureController textures, ShaderController shaders){
         this.textures = textures;
+        this.shaders = shaders;
     }
 
     @Override
@@ -20,8 +22,8 @@ public class SquareCreator implements DrawableCreator{
 
         for(int w = 1; w >= -1; w -= 2) {
             for (int h = 1; h >= -1; h -=2) {
-                vertices.add(w * 1f);
-                vertices.add(h * 1f);
+                vertices.add(w * 0.5f);
+                vertices.add(h * 0.5f);
                 vertices.add(0f);
 
                 if(w < 0) {
@@ -53,6 +55,6 @@ public class SquareCreator implements DrawableCreator{
         float rotation, 
         float xScale, float yScale,
         String texture){
-        return new DrawableGameObject(x, y, 0, 0, 0, rotation, xScale, yScale, textures, texture, startIndex, numIndices);
+        return new DrawableGameObject(x, y, 0, 0, 0, rotation, xScale, yScale, shaders, textures, texture, startIndex, numIndices);
     }
 }

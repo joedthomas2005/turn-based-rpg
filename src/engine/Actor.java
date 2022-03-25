@@ -12,15 +12,14 @@ public class Actor extends GameObject{
         this.animator = animator;
     }
 
-    public void draw(ShaderController shaders){
-        
+    public void draw(){
         sprite.setX(x);
         sprite.setY(y);
         sprite.setRoll(roll);
         sprite.setXScale(xScale);
         sprite.setYScale(yScale);
 
-        sprite.draw(shaders, animator.getFrame());
+        sprite.draw(animator.getFrame());
     }
 
     public void animate(){
