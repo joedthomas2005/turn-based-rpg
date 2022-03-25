@@ -24,11 +24,40 @@ public class Vector {
 		
 	}
 	
-	
+	@Override
+	public boolean equals(Object other){
+
+		if(other == this){
+			return true;
+		}
+
+		if(!(other instanceof Vector)){
+			return false;
+		}
+
+		Vector otherVector = (Vector) other;
+		if(otherVector.data.length != this.data.length){
+			return false;
+		}
+
+		for(int i = 0; i < this.data.length; i++){
+			if(this.data[i] != otherVector.data[i]){
+				return false;
+			}
+		}
+		return true;
+
+	}
+	/**
+	 * Return the x value of the vector (if it has one)
+	 */
 	public float x() {
 		return this.data[0];
 	}
 	
+	/**
+	 * Return the y value of the vector(if it has one)
+	 */
 	public float y() {
 		try {
 			return this.data[1];
@@ -39,6 +68,9 @@ public class Vector {
 		}
 	}
 	
+	/**
+	 * Return the z value of the vector (if it has one)
+	 */
 	public float z() {
 		try {
 			return this.data[2];
@@ -49,6 +81,9 @@ public class Vector {
 		}
 	}
 	
+	/**
+	 * Return the w value of the vector (if it has one)
+	 */
 	public float w() {
 		try {
 			return this.data[3];
@@ -59,6 +94,7 @@ public class Vector {
 			return 0;
 		}
 	}
+
 	/**
 	 * Performs a component-wise addition (all components of this vector are added to the corresponding components of the other)
 	 * between this and another vector of the same size and returns the resultant vector. 
@@ -120,6 +156,13 @@ public class Vector {
 
 		return new Vector(result);
 	}
+
+	/**
+	 * Return a unit vector with the same direction to this one but with a magnitude of 1
+	 * @Return a unit vector 
+	 */
+	
+	 public Vector normalise(){	return this.multiply((float) (1.0f/this.getLength())); }
 
 	/**
 	 * Multiplies all components of this vector by the corresponding components of another given vector and returns the dot product.
