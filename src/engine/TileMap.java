@@ -27,7 +27,7 @@ public class TileMap {
             int tileMapWidth = Integer.parseInt(tileMapData.get(2));
             int tileMapHeight = Integer.parseInt(tileMapData.get(3));
             String defaultTexture = tileMapData.get(4);
-            HashMap<Vector, String> nonDefaults = new HashMap<Vector, String>();
+            HashMap<String, String> nonDefaults = new HashMap<String, String>();
             
             for(int i = 5; i < tileMapData.size(); i++){
                 
@@ -66,7 +66,7 @@ public class TileMap {
                 
                 for(int x : xInRange){
                     for(int y : yInRange){
-                        nonDefaults.put(new Vector(x,y), texture);
+                        nonDefaults.put(Integer.toString(x)+","+Integer.toString(y), texture);
                     }
                 }
             }
@@ -80,7 +80,7 @@ public class TileMap {
                             actorManager.create(tileWidth * x, tileHeight * y, 
                             0,
                             tileWidth, tileHeight,
-                            nonDefaults.get(new Vector(x,y))));
+                            nonDefaults.get(Integer.toString(x)+","+Integer.toString(y))));
                     }
                     catch(NullPointerException e){
                         tiles.add(

@@ -29,7 +29,7 @@ public final class Game implements Runnable{
 		glfwInit();
 
 		//Create window and context
-		window = new Window(1920, "Turn Based RPG", 1, false);
+		window = new Window(1920, "Turn Based RPG", 1, true);
 		window.setColor(1, 1, 1, 1);
 		glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);	
 		
