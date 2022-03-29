@@ -1,10 +1,11 @@
 package engine;
+import globals.PATHS;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.Hashtable;
 
 import engine.exceptions.TextureLoadException;
-import globals.PATHS;
 
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
@@ -20,12 +21,17 @@ import static org.lwjgl.opengl.GL30.*;
 public class TextureController {
 	
 	private final Hashtable<String, Integer> textureNames = new Hashtable<String, Integer>();
-	public TextureController(String... paths) throws TextureLoadException {
+	public TextureController() throws TextureLoadException {
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		stbi_set_flip_vertically_on_load(true);
-
+		
+		File[] textures = new File(globals.PATHS.TextureDir).listFiles();
+		String[] paths = new String[textures.length];
+		for(int tex = 0; tex < textures.length; tex++) {
+			paths[tex] = textures[tex].getName();
+		}
 		for(String path: paths) {
 			
 			if(!textureNames.containsKey(path)) {

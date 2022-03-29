@@ -45,7 +45,7 @@ public class GameObject {
 	}
 	
 	public void setZ(float z) throws MatrixSizeMismatchException {
-		this.z = z;
+		this.z = z;matrix multiplication gpu or cpu
 		this.genTransformMatrix();
 
 	}

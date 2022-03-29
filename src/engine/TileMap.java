@@ -73,9 +73,7 @@ public class TileMap {
 
             for(int x = 0; x < tileMapWidth; x++){
                 for(int y = 0; y < tileMapHeight; y++){
-                    try{    
-
-                        
+                    try{                            
                         tiles.add(
                             actorManager.create(tileWidth * x, tileHeight * y, 
                             0,
@@ -92,9 +90,15 @@ public class TileMap {
                 }
             }
             
-        } catch (IOException e) {
-            System.err.println("Could not read tileMap data.");
+        }
+        
+        catch (IOException e) {
+            System.err.println("Could not open tilemap file.");
             e.printStackTrace();
+        }
+        catch(NumberFormatException e) {
+        	System.err.println("Could not parse tilemap data. Likely syntax error.");
+        	
         }
 
     }

@@ -40,7 +40,7 @@ public class DrawableGameObject extends GameObject {
 			throw new TextureBindException(this.texturePath, this.textureID);
 		}
 		
-        shaders.setMat4f("texture", frame);
+        shaders.setMat4f("texCoordTransform", frame);
 		shaders.setMat4f("transform", this.trans);
 		
 		glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, startIndex * Integer.BYTES);

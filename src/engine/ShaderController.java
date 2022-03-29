@@ -64,14 +64,17 @@ public class ShaderController {
 		projectionID = glGetUniformLocation(ID, "projection");
 		transformID = glGetUniformLocation(ID, "transform");
 		textureID = glGetUniformLocation(ID, "texCoordTransform");
+		setProjection(projection);
 	}
 	
 
 	public void setView(Matrix view) {
 		setMat4f("view", view);
-		setMat4f("projection", projection);
 	}
 	
+	public void setProjection(Matrix projection) {
+		setMat4f("projection", projection);
+	}
 	public void setVec3f(String name, float x, float y, float z) {
 		glUniform3f(glGetUniformLocation(ID, name), x, y, z);
 	}
@@ -99,7 +102,7 @@ public class ShaderController {
 		case "transform":
 			glUniformMatrix4fv(transformID, true, matrixBuffer);
 			break;
-		case "texture":
+		case "texCoordTransform":
 			glUniformMatrix4fv(textureID, true, matrixBuffer);
 			break;
 		default:

@@ -50,6 +50,13 @@ public class Camera extends GameObject{
 				&& leftTop.y() > 0);
 	}
 	
+	public Matrix getView() {
+		return this.getTransformMatrix();
+	}
+	
+	public void bindView(ShaderController shaderController) {
+		shaderController.setView(this.getTransformMatrix());
+	}
 	public void update() {
 		this.moved = false;
 	}
