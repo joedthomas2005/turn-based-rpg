@@ -12,17 +12,13 @@ public final class Game implements Runnable{
 	GameContext gameContext;
 
     public Game() throws ShaderException, IOException{
-		this.gameContext = new gameContext(1920);
+		this.gameContext = new GameContext();
 	};
 
 
 	@Override
 	public void run(){
-		time = glfwGetTime();
-		lastTime = glfwGetTime();
-		deltaTime = 0;
-		
-		curFrame = 0;
+		gameContext.create(1920, true);
 		while(!window.shouldClose()){
 			update();
 		}

@@ -73,20 +73,17 @@ public class TileMap {
 
             for(int x = 0; x < tileMapWidth; x++){
                 for(int y = 0; y < tileMapHeight; y++){
-                    try{                            
-                        tiles.add(
-                            actorManager.create(tileWidth * x, tileHeight * y, 
-                            0,
-                            tileWidth, tileHeight,
-                            nonDefaults.get(Integer.toString(x)+","+Integer.toString(y))));
-                    }
-                    catch(NullPointerException e){
-                        tiles.add(
-                            actorManager.create(tileWidth * x, tileHeight * y,
-                            0,
-                            tileWidth, tileHeight,
-                            defaultTexture));
-                    }        
+                	
+                	String texture = "";
+                	try {
+                		texture = nonDefaults.get(Integer.toString(x)+","+Integer.toString(y));
+                	}
+                	catch(NullPointerException e) {
+                		texture = defaultTexture;
+                	}
+                	
+                    tiles.add(actorManager.create(tileWidth * x, tileHeight * y, 0, tileWidth, tileHeight, nonDefaults.get(texture)));
+
                 }
             }
             
@@ -94,7 +91,6 @@ public class TileMap {
         
         catch (IOException e) {
             System.err.println("Could not open tilemap file.");
-            e.printStackTrace();
         }
         catch(NumberFormatException e) {
         	System.err.println("Could not parse tilemap data. Likely syntax error.");
