@@ -18,42 +18,28 @@ public final class Game implements Runnable{
 
 	@Override
 	public void run(){
-		gameContext.create(1920, true);
-		while(!window.shouldClose()){
+		
+		try {
+			gameContext.create(1920, false, "Turn Based RPG", "animated_cursor.png");
+		} 
+		
+		catch (ShaderException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		gameContext.loadTilemap("test.tlm");
+		gameContext.enableCursor();
+		
+		while(!gameContext.getWindow().shouldClose()) {
 			update();
 		}
-
-		window.destroy();		
+		gameContext.getWindow().destroy();
 	}
 
 
 	public final void update() {
 		
-		curFrame++;
-		time = glfwGetTime();
-		deltaTime = (time - lastTime) * 100;
-		
-		glClear(GL_COLOR_BUFFER_BIT);
-		camera.bindView(shaderController);
-		//Draw loop
-		tileMap.draw();
-		cursor.draw();
-
-		if(inputController.leftMouseClicked()){
-			cursor.click();
-		}
-
-		if(inputController.isKeyDown(GLFW_KEY_ESCAPE)){
-			glfwSetWindowShouldClose(window.getWindow(), true);
-		}
-
-		if(curFrame % 10 == 0){
-			cursor.cursor.animate();
-		}
-	
-		cameraController.update((float)deltaTime);
-		inputController.reset();
-		window.update();
-		lastTime = time;
+		gameContext.startFrame();
+		gameContext.endFrame();
 	}
 }

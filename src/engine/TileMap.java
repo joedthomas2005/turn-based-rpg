@@ -75,14 +75,15 @@ public class TileMap {
                 for(int y = 0; y < tileMapHeight; y++){
                 	
                 	String texture = "";
-                	try {
+                	
+                	if(nonDefaults.containsKey(Integer.toString(x)+","+Integer.toString(y))) {
                 		texture = nonDefaults.get(Integer.toString(x)+","+Integer.toString(y));
                 	}
-                	catch(NullPointerException e) {
+                	else {
                 		texture = defaultTexture;
                 	}
                 	
-                    tiles.add(actorManager.create(tileWidth * x, tileHeight * y, 0, tileWidth, tileHeight, nonDefaults.get(texture)));
+                    tiles.add(actorManager.create(tileWidth * x, tileHeight * y, 0, tileWidth, tileHeight, texture));
 
                 }
             }

@@ -11,7 +11,7 @@ public class Cursor{
 	
 	public Cursor(ActorManager actorManager, InputController input, Camera camera, String texture){
 		this.cursor = actorManager.create(0,0,0,100,110,texture,
-				new Animator(new SpriteSheetParser(4, 2), new int[]{0,0}, new int[]{1,3})); //0,0 must be the default cursor state and then there must be a 3 frame click animation
+				new Animator(new SpriteSheetParser(4, 2), 10, new int[]{0,0}, new int[]{1,3})); //0,0 must be the default cursor state and then there must be a 3 frame click animation
 				
 		this.inputController = input;
 		this.camera = camera;

@@ -22,8 +22,11 @@ public class Actor extends GameObject{
         sprite.draw(animator.getFrame());
     }
 
-    public void animate(){
-        animator.nextFrame();
+    public void animate(int currentFrame){
+    	
+        if(currentFrame % animator.animationInterval == 0) {
+        	animator.nextFrame();
+        }
     }
 
     public int getAnimationState(){
@@ -33,6 +36,7 @@ public class Actor extends GameObject{
     public boolean animationFinished(){
         return animator.isFinished();
     }
+    
     public void setAnimationState(int state){
         animator.setState(state);
     }

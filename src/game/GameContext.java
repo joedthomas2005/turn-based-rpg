@@ -1,9 +1,7 @@
 package game;
 
-import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
-import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_HIDDEN;
-import static org.lwjgl.glfw.GLFW.glfwInit;
-import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL33.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,16 +14,16 @@ public class GameContext {
 	private Window window;
 	private ShaderController shaderController;
 	private Camera camera;
+	private CameraController cameraController;
 	private ArrayList<TileMap> tileMaps = new ArrayList<TileMap>();
-	private ArrayList<Actor> actors = new ArrayList<Actors>();
 	private InputController inputController;
 	private ActorManager actorManager;
 	private Cursor cursor;
 	
-	private double currentFrame;
-	private double time;
-	private double lastFrameTime;
-	private double deltaTime;
+	private int currentFrame = 0;
+	private double time = 0;
+	private double lastFrameTime = 0;
+	private double deltaTime = 0;
 	
 	public void create(int width, Boolean fullscreen, String windowTitle, String cursor) throws ShaderException, IOException {
 		//Enable GLFW
@@ -39,9 +37,10 @@ public class GameContext {
 		//Setup required components and controllers
 		BufferController bufferController = new BufferController();
 		camera = new Camera(0,0,0, window);
-
+	
 		inputController = new InputController(window);
 		
+		cameraController = new CameraController(camera, inputController, 10f);
 		shaderController = new ShaderController("vertex.hlsl", "frag.hlsl", window);
 		
 		TextureController textureController = new TextureController();
@@ -71,7 +70,84 @@ public class GameContext {
 	}
 	
 	public void addActor(Actor object) {
-		this.actors.add(object);
+		actorManager.add(object);
+	}
+	
+	public void startFrame() {
+		currentFrame++;
+		time = glfwGetTime();
+		deltaTime = (time - lastFrameTime) * 100;
+		
+		glClear(GL_COLOR_BUFFER_BIT);
+		this.camera.bindView(this.shaderController);
+		
+		if(inputController.isKeyDown(GLFW_KEY_ESCAPE)) {
+			glfwSetWindowShouldClose(window.getWindow(), true);
+		}
+		
+		if(inputController.leftMouseClicked()) {
+			this.cursor.click();
+		}
+		
+		for(TileMap tilemap: tileMaps) {
+			tilemap.draw();
+		}
+		
+	}
+	
+	public void endFrame() {
+
+		actorManager.drawAll();
+		actorManager.animateAll(currentFrame);
+		
+		this.cursor.draw();
+		this.cursor.cursor.animate(currentFrame);
+		
+		cameraController.update(deltaTime);
+		inputController.reset();
+		window.update();
+		lastFrameTime = time;
+		
+	}
+	
+	public Window getWindow() {
+		return this.window;
+	}
+	
+	public InputController getInputController() {
+		return this.inputController;
+	}
+	
+	public ShaderController getShaderController() {
+		return this.shaderController;
+	}
+	
+	public ActorManager getActorManager() {
+		return this.actorManager;
+	}
+	
+	public ArrayList<TileMap> getTileMapArray(){
+		return this.tileMaps;
+	}
+	
+	public TileMap getTileMap(int tileMap) {
+		return this.tileMaps.get(tileMap);
+	}
+	
+	public Camera getCamera() {
+		return this.camera;
+	}
+	
+	public CameraController getCameraController() {
+		return this.cameraController;
+	}
+	
+	public Cursor getCursor() {
+		return this.cursor;
+	}
+	
+	public Actor getCursorRaw() {
+		return this.cursor.cursor;
 	}
 	
 }

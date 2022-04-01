@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ActorManager {
     
     private final DrawableCreator creator; 
-    private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), new int[]{0,1});
+    private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), 0, new int[]{0,1});
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
     private final Camera camera;
     
@@ -62,7 +62,7 @@ public class ActorManager {
     public void add(Actor actor){
         actors.add(actor);
     }
-
+    
     /**
      * Draw the actor if it is visible in the stored camera's viewport.
      * @param actor the actor to draw.
@@ -85,9 +85,9 @@ public class ActorManager {
     /**
      * Animate all actors in the stored actor list (switch them to their current animation state's next frame).
      */
-    public void animateAll() {
+    public void animateAll(int currentFrame) {
     	for(Actor actor : actors) {
-    		actor.animate();
+    		actor.animate(currentFrame);
     	}
     }
 

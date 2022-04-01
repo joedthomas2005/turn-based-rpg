@@ -8,12 +8,14 @@ public class Animator {
     private final int[][] animationRanges;
     private int currentFrame;
     private int currentAnimation;
-
-    public Animator(SpriteSheetParser parser, int[]... animationRanges){
+    public int animationInterval;
+    
+    public Animator(SpriteSheetParser parser, int animationInterval ,int[]... animationRanges){
         
         this.animationRanges = animationRanges;
         this.frames = parser;
         this.currentFrame = 0;
+        this.animationInterval = animationInterval;
 
     }
 

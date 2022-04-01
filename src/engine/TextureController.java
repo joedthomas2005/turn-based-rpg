@@ -2,6 +2,7 @@ package engine;
 import globals.PATHS;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.nio.ByteBuffer;
 import java.util.Hashtable;
 
@@ -27,13 +28,23 @@ public class TextureController {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		stbi_set_flip_vertically_on_load(true);
 		
-		File[] textures = new File(globals.PATHS.TextureDir).listFiles();
+		File[] textures = new File(globals.PATHS.TextureDir).listFiles(new FilenameFilter() {
+			
+			public boolean accept(File f, String name) {
+				return name.endsWith(".png") || name.endsWith(".jpg");
+			}
+			
+		});
+		
 		String[] paths = new String[textures.length];
+		
 		for(int tex = 0; tex < textures.length; tex++) {
 			paths[tex] = textures[tex].getName();
 		}
+		
+		
 		for(String path: paths) {
-			
+			System.out.println(path);
 			if(!textureNames.containsKey(path)) {
 				
 				int[] texWidth = new int[1];
@@ -68,6 +79,7 @@ public class TextureController {
 	 * @return the int ID of the given texure name
 	 */
 	public int getTexture(String path) {
+		System.out.println("Getting textureID for " + path);
 		return textureNames.get(path);
 	}
 }
