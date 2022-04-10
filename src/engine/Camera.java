@@ -43,7 +43,6 @@ public class Camera extends GameObject{
 	public boolean isRectVisible(float left, float right, float bottom, float top) {
 		Vector leftTop = worldToScreen(left, top);
 		Vector rightBottom = worldToScreen(right, bottom);
-
 		return (leftTop.x() < window.getWidth()
 				&& rightBottom.x() > 0
 				&& rightBottom.y() < window.getHeight()

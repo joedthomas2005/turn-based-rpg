@@ -1,12 +1,10 @@
 package game;
 import engine.*;
 import engine.exceptions.ShaderException;
+import matrices.Vector;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL30.*;
 import java.io.IOException;
 
-import matrices.Vector;
 public final class Game implements Runnable{
 
 	GameContext gameContext;
@@ -20,7 +18,7 @@ public final class Game implements Runnable{
 	public void run(){
 		
 		try {
-			gameContext.create(1920, false, "Turn Based RPG", "animated_cursor.png");
+			gameContext.create(1366, true, "Turn Based RPG", "animated_cursor.png");
 		} 
 		
 		catch (ShaderException | IOException e) {
@@ -38,6 +36,20 @@ public final class Game implements Runnable{
 
 
 	public final void update() {
+		
+		Cursor cursor = gameContext.getCursor();
+		InputController input = gameContext.getInputController();
+
+		float x = cursor.getActor().getX();
+		float y = cursor.getActor().getY();
+
+		if(input.leftMouseClicked()){
+		
+			gameContext.addActor(
+				gameContext.createRect(x, y, 0, 100, 100, "placeholder.png")
+			);
+
+		}
 		
 		gameContext.startFrame();
 		gameContext.endFrame();

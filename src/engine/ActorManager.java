@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ActorManager {
     
     private final DrawableCreator creator; 
-    private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), 0, new int[]{0,1});
+    private final Animator noAnimations = new Animator(new SpriteSheetParser(1,1), 1, new int[]{0,1});
     private final ArrayList<Actor> actors = new ArrayList<Actor>();
     private final Camera camera;
     
@@ -78,7 +78,7 @@ public class ActorManager {
      */
     public void drawAll() {
     	for(Actor actor : actors) {
-    		actor.draw();
+    		draw(actor);
     	}
     }
     

@@ -50,4 +50,8 @@ public class Cursor{
 	public void hide() {
 		this.enabled = false;
 	}
+
+	public Actor getActor(){
+		return this.cursor;
+	}
 }

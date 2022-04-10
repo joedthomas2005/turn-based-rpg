@@ -73,6 +73,10 @@ public class GameContext {
 		actorManager.add(object);
 	}
 	
+	public Actor createRect(float x, float y, float rotation, float xScale, float yScale, String texture){
+		return actorManager.create(x, y, rotation, xScale, yScale, texture);
+	}
+
 	public void startFrame() {
 		currentFrame++;
 		time = glfwGetTime();
