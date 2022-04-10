@@ -36,6 +36,8 @@ public final class Game implements Runnable{
 
 
 	public final void update() {
+
+		gameContext.startFrame();
 		
 		Cursor cursor = gameContext.getCursor();
 		InputController input = gameContext.getInputController();
@@ -51,7 +53,6 @@ public final class Game implements Runnable{
 
 		}
 		
-		gameContext.startFrame();
 		gameContext.endFrame();
 	}
 }
